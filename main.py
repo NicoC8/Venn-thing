@@ -41,15 +41,15 @@ class VennOrganizer:
                 '01': sets[1] - sets[0],
                 '11': sets[0] & sets[1]
             }
-        else:  # 3 categories - display in clear triangle formation
-            # matplotlib-venn arranges 3 circles in triangle by default
-            # Adjust figure to emphasize the triangular layout
-            plt.clf()  # Clear any existing plot
-            plt.figure(figsize=(10, 8))  # Larger figure for better triangle visibility
-            v = venn3(sets, set_labels=cats)
+        else:  # 3 categories - display with more spacing between circles
+            # Use subsets parameter to control circle spacing
+            v = venn3(sets, set_labels=cats, 
+                     subset_label_formatter=lambda x: str(x) if x else '',
+                     alpha=0.8)  # Make circles slightly transparent for better overlap visibility
             
-            # Enhance the triangular appearance
-            plt.gca().set_aspect('equal', adjustable='box')
+            # Increase spacing by adjusting the axis limits
+            plt.xlim(-1.2, 1.2)
+            plt.ylim(-1.0, 1.0)
             regions = {
                 '100': sets[0] - sets[1] - sets[2],
                 '010': sets[1] - sets[0] - sets[2],
