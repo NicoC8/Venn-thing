@@ -28,7 +28,11 @@ class VennOrganizer:
             venn3(sets, set_labels=cats)
 
         plt.title("Venn Diagram for " + ", ".join(cats))
-        plt.show()
+        # Save the plot as an image file instead of trying to display it
+        filename = f"venn_{'_'.join(cats)}.png"
+        plt.savefig(filename, dpi=300, bbox_inches='tight')
+        plt.close()  # Close the figure to free memory
+        print(f"Venn diagram saved as: {filename}")
 
 
 # Example usage
