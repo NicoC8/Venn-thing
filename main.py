@@ -1,9 +1,21 @@
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn2, venn3
+import os
+import glob
 
 class VennOrganizer:
     def __init__(self):
         self.categories = {}
+    
+    def cleanup_old_diagrams(self):
+        """Delete all existing venn diagram PNG files."""
+        old_files = glob.glob("venn_*.png")
+        for file in old_files:
+            try:
+                os.remove(file)
+                print(f"Deleted old diagram: {file}")
+            except OSError:
+                pass  # File might already be deleted
 
     def add_category(self, name, items):
         """Add a category with its items (as a list or set)."""
@@ -61,8 +73,11 @@ class VennOrganizer:
 # Example usage
 if __name__ == "__main__":
     organizer = VennOrganizer()
+    
+    # Clean up old PNG files from previous runs
+    organizer.cleanup_old_diagrams()
 
-    organizer.add_category("Fruits", ["apple", "banana", "cherry", "mango"])
+    organizer.add_category("Fruits", ["orange", "banana", "cherry", "mango"])
     organizer.add_category("Red Items", ["apple", "cherry", "tomato"])
     organizer.add_category("Tropical", ["mango", "banana", "pineapple", "papaya"])
 
