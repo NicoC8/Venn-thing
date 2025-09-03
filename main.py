@@ -41,8 +41,15 @@ class VennOrganizer:
                 '01': sets[1] - sets[0],
                 '11': sets[0] & sets[1]
             }
-        else:  # 3 categories
+        else:  # 3 categories - display in clear triangle formation
+            # matplotlib-venn arranges 3 circles in triangle by default
+            # Adjust figure to emphasize the triangular layout
+            plt.clf()  # Clear any existing plot
+            plt.figure(figsize=(10, 8))  # Larger figure for better triangle visibility
             v = venn3(sets, set_labels=cats)
+            
+            # Enhance the triangular appearance
+            plt.gca().set_aspect('equal', adjustable='box')
             regions = {
                 '100': sets[0] - sets[1] - sets[2],
                 '010': sets[1] - sets[0] - sets[2],
