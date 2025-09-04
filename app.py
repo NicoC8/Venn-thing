@@ -39,13 +39,40 @@ if edit_civ:
         civilizations[edit_civ][sub] = [i.strip() for i in items.split(",") if i.strip()]
     save_data()
 
-# --- Sidebar: Delete civilization ---
+# Delete civilization
 delete_civ = st.sidebar.selectbox("Delete civilization:", [""] + list(civilizations.keys()))
 if delete_civ:
     if st.sidebar.button(f"Delete {delete_civ}"):
         civilizations.pop(delete_civ)
         save_data()
         st.sidebar.warning(f"{delete_civ} deleted.")
+
+# --- JSON Export / Import ---
+st.sidebar.markdown("---")
+st.sidebar.subheader("Backup / Restore")
+
+# Download button
+if civilizations:
+    st.sidebar.download_button(
+        label="Download JSON",
+        data=json.dumps(civilizations, indent=2),
+        file_name="civilizations.json",
+        mime="application/json"
+    )
+
+# Upload button
+uploaded_file = st.sidebar.file_uploader("Upload JSON to restore", type=["json"])
+if uploaded_file is not None:
+    try:
+        data = json.load(uploaded_file)
+        if isinstance(data, dict):
+            civilizations = data
+            save_data()
+            st.sidebar.success("Data restored from JSON!")
+        else:
+            st.sidebar.error("Invalid JSON format.")
+    except Exception as e:
+        st.sidebar.error(f"Error reading JSON: {e}")
 
 # --- Main panel: Venn diagram ---
 st.title("Ancient Civilizations Venn Diagram")
