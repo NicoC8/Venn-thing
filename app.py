@@ -81,7 +81,7 @@ st.title("Ancient Civilizations Venn Diagram")
 subcat = st.selectbox("Select subcategory to compare:", SUBCATEGORIES)
 
 # Civilization selection
-selected_civs = st.multiselect("Select 2-3 civilizations:", list(civilizations.keys()), default=list(civilizations.keys())[:2])
+selected_civs = st.multiselect("Select 2-3 civilizations:", list(civilizations.keys()))
 
 def plot_venn(selected_civs, subcat):
     sets = [set(civilizations[c][subcat]) for c in selected_civs]
