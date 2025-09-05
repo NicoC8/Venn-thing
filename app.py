@@ -50,7 +50,6 @@ tab_choice = st.sidebar.radio("📂 Sidebar Options", ["💬 Chat", "📜 Event 
 # --- Chat Tab ---
 if tab_choice == "💬 Chat":
     st.sidebar.subheader("💬 Shared Message Board")
-    st.experimental_autorefresh(interval=10_000, key="chatrefresh")
 
     if messages:
         for msg in reversed(messages):
