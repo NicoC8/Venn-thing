@@ -206,12 +206,14 @@ elif tab_choice == "📜 Event Log":
     # --- Admin Clear Button ---
     ADMIN_EMAIL = "ncobb@cusd.me"  # change to your email
     if st.session_state.get("user_email") == ADMIN_EMAIL:
-        if st.sidebar.button("🗑 Clear Event Log"):
-            if st.sidebar.confirm("Are you sure you want to clear the event log? This cannot be undone."):
-                events.clear()
-                with open(EVENTS_FILE, "w") as f:
-                    json.dump(events, f, indent=2)
-                st.sidebar.success("Event log cleared!")
+        st.sidebar.markdown("---")
+        st.sidebar.write("🛠 Admin Controls")
+        confirm_clear = st.sidebar.checkbox("Confirm clearing the event log", key="confirm_clear")
+        if confirm_clear and st.sidebar.button("🗑 Clear Event Log"):
+            events.clear()
+            with open(EVENTS_FILE, "w") as f:
+                json.dump(events, f, indent=2)
+            st.sidebar.success("Event log cleared!")
 
 
 # --- Main panel: Venn diagram ---
