@@ -195,11 +195,24 @@ elif tab_choice == "💬 Chat":
 # -----------------------------
 elif tab_choice == "📜 Event Log":
     st.sidebar.subheader("📜 Permanent Event Log")
+    
+    # Show events
     if events:
         for ev in reversed(events):
             st.sidebar.markdown(f"- {ev['time']}: {ev['action']}")
     else:
         st.sidebar.info("No events logged yet.")
+    
+    # --- Admin Clear Button ---
+    ADMIN_EMAIL = "ncobb@cusd.me"  # change to your email
+    if st.session_state.get("user_email") == ADMIN_EMAIL:
+        if st.sidebar.button("🗑 Clear Event Log"):
+            if st.sidebar.confirm("Are you sure you want to clear the event log? This cannot be undone."):
+                events.clear()
+                with open(EVENTS_FILE, "w") as f:
+                    json.dump(events, f, indent=2)
+                st.sidebar.success("Event log cleared!")
+
 
 # --- Main panel: Venn diagram ---
 st.title("Ancient Civilizations Venn Diagram")
