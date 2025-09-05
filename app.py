@@ -4,6 +4,85 @@ from matplotlib_venn import venn2, venn3
 import json
 import os
 import textwrap
+import datetime
+# --- Files ---
+MESSAGES_FILE = "messages.json"
+EVENTS_FILE = "events.json"
+
+# --- Load messages (expire after 3 days) ---
+if os.path.exists(MESSAGES_FILE):
+    with open(MESSAGES_FILE, "r") as f:
+        messages = json.load(f)
+else:
+    messages = []
+
+def save_messages():
+    with open(MESSAGES_FILE, "w") as f:
+        json.dump(messages, f, indent=2)
+
+# Filter old messages
+now = datetime.datetime.now()
+messages = [
+    m for m in messages
+    if (now - datetime.datetime.strptime(m["time"], "%Y-%m-%d %H:%M:%S")).days < 3
+]
+save_messages()
+
+# --- Load permanent event log ---
+if os.path.exists(EVENTS_FILE):
+    with open(EVENTS_FILE, "r") as f:
+        events = json.load(f)
+else:
+    events = []
+
+def save_event(action: str):
+    """Record a permanent event with timestamp."""
+    events.append({
+        "action": action,
+        "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
+    with open(EVENTS_FILE, "w") as f:
+        json.dump(events, f, indent=2)
+
+# --- Sidebar Tabs ---
+tab_choice = st.sidebar.radio("📂 Sidebar Options", ["💬 Chat", "📜 Event Log"])
+
+# --- Chat Tab ---
+if tab_choice == "💬 Chat":
+    st.sidebar.subheader("💬 Shared Message Board")
+    st.experimental_autorefresh(interval=10_000, key="chatrefresh")
+
+    if messages:
+        for msg in reversed(messages):
+            st.sidebar.markdown(
+                f"**{msg['user']}** [{msg['time']}]: {msg['text']}"
+            )
+    else:
+        st.sidebar.info("No recent messages (messages auto-expire after 3 days).")
+
+    # Chat form
+    with st.sidebar.form("message_form", clear_on_submit=True):
+        user = st.text_input("Your name")
+        text = st.text_area("Your message")
+        submitted = st.form_submit_button("Send")
+        if submitted and user and text:
+            msg = {
+                "user": user.strip(),
+                "text": text.strip(),
+                "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+            messages.append(msg)
+            save_messages()
+            st.sidebar.success("Message posted!")
+
+# --- Event Log Tab ---
+elif tab_choice == "📜 Event Log":
+    st.sidebar.subheader("📜 Permanent Event Log")
+    if events:
+        for ev in reversed(events):
+            st.sidebar.markdown(f"- {ev['time']}: {ev['action']}")
+    else:
+        st.sidebar.info("No events logged yet.")
 
 # --- Constants ---
 JSON_FILE = "civilizations.json"
