@@ -5,38 +5,59 @@ import json
 import os
 import textwrap
 import datetime
-# --- Files ---
+
+import os
+import json
+import datetime
+import streamlit as st
+
+# -----------------------------
+# File paths
+# -----------------------------
+CIV_FILE = "civilizations.json"
 MESSAGES_FILE = "messages.json"
 EVENTS_FILE = "events.json"
+USERS_FILE = "users.json"
 
-# --- Load messages (expire after 3 days) ---
+# -----------------------------
+# Load or initialize data
+# -----------------------------
+if os.path.exists(CIV_FILE):
+    with open(CIV_FILE, "r") as f:
+        civilizations = json.load(f)
+else:
+    civilizations = {}  # { civ_name: { subcategory: [items] } }
+
 if os.path.exists(MESSAGES_FILE):
     with open(MESSAGES_FILE, "r") as f:
         messages = json.load(f)
 else:
     messages = []
 
-def save_messages():
-    with open(MESSAGES_FILE, "w") as f:
-        json.dump(messages, f, indent=2)
-
-# Filter old messages
-now = datetime.datetime.now()
-messages = [
-    m for m in messages
-    if (now - datetime.datetime.strptime(m["time"], "%Y-%m-%d %H:%M:%S")).days < 3
-]
-save_messages()
-
-# --- Load permanent event log ---
 if os.path.exists(EVENTS_FILE):
     with open(EVENTS_FILE, "r") as f:
         events = json.load(f)
 else:
     events = []
 
+if os.path.exists(USERS_FILE):
+    with open(USERS_FILE, "r") as f:
+        users = json.load(f)
+else:
+    users = {}
+
+# -----------------------------
+# Helper functions
+# -----------------------------
+def save_data():
+    with open(CIV_FILE, "w") as f:
+        json.dump(civilizations, f, indent=2)
+
+def save_messages():
+    with open(MESSAGES_FILE, "w") as f:
+        json.dump(messages, f, indent=2)
+
 def save_event(action: str):
-    """Record a permanent event with timestamp."""
     events.append({
         "action": action,
         "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -44,37 +65,132 @@ def save_event(action: str):
     with open(EVENTS_FILE, "w") as f:
         json.dump(events, f, indent=2)
 
-# --- Sidebar Tabs ---
-tab_choice = st.sidebar.radio("📂 Sidebar Options", ["💬 Chat", "📜 Event Log"])
+def save_users():
+    with open(USERS_FILE, "w") as f:
+        json.dump(users, f, indent=2)
 
-# --- Chat Tab ---
-if tab_choice == "💬 Chat":
+# -----------------------------
+# Session state for email
+# -----------------------------
+if "user_email" not in st.session_state:
+    st.session_state["user_email"] = ""
+
+st.sidebar.text_input("Enter your email:", key="user_email")
+
+nickname = None
+if st.session_state["user_email"]:
+    email = st.session_state["user_email"].strip()
+    if email in users:
+        nickname = users[email]
+    else:
+        with st.sidebar.form("nickname_form"):
+            new_nick = st.text_input("Choose a nickname")
+            submitted = st.form_submit_button("Save Nickname")
+            if submitted and new_nick.strip():
+                users[email] = new_nick.strip()
+                save_users()
+                nickname = users[email]
+                st.sidebar.success(f"Nickname '{nickname}' saved!")
+
+# -----------------------------
+# Sidebar tabs
+# -----------------------------
+tab_choice = st.sidebar.radio("📂 Sidebar Options", ["🗂 Civilizations", "💬 Chat", "📜 Event Log"])
+
+# -----------------------------
+# Civilization Editor Tab
+# -----------------------------
+if tab_choice == "🗂 Civilizations":
+    st.sidebar.subheader("➕ Add Civilization")
+    new_civ = st.text_input("Civilization Name", key="add_civ")
+    if st.sidebar.button("Add Civilization"):
+        if new_civ and new_civ not in civilizations:
+            civilizations[new_civ] = {sub: [] for sub in ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]}
+            save_data()
+            save_event(f"Added civilization '{new_civ}'")
+            st.sidebar.success(f"Civilization '{new_civ}' added!")
+
+    st.sidebar.subheader("🗑 Delete Civilization")
+    if civilizations:
+        delete_civ = st.sidebar.selectbox("Choose Civilization", list(civilizations.keys()), key="delete_civ")
+        if st.sidebar.button("Delete Civilization"):
+            del civilizations[delete_civ]
+            save_data()
+            save_event(f"Deleted civilization '{delete_civ}'")
+            st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
+
+    st.sidebar.subheader("✏️ Edit Civilization")
+    if civilizations:
+        edit_civ = st.sidebar.selectbox("Choose Civilization to Edit", list(civilizations.keys()), key="edit_civ")
+        edit_sub = st.sidebar.selectbox("Choose Subcategory", ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], key="edit_sub")
+        current_items = civilizations[edit_civ][edit_sub]
+        new_items = st.sidebar.text_area("Enter items (comma-separated)", ", ".join(current_items), key="edit_items")
+        if st.sidebar.button("Save Changes"):
+            civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
+            save_data()
+            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'")
+            st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
+
+    st.sidebar.subheader("💾 Backup / Restore")
+    st.sidebar.download_button(
+        label="Download JSON",
+        data=json.dumps(civilizations, indent=2),
+        file_name="civilizations.json",
+        mime="application/json"
+    )
+    uploaded_file = st.sidebar.file_uploader("Upload JSON to restore", type=["json"])
+    if uploaded_file is not None:
+        try:
+            data = json.load(uploaded_file)
+            if isinstance(data, dict):
+                civilizations = data
+                save_data()
+                st.sidebar.success("Data restored from JSON!")
+                save_event("Civilizations restored from uploaded JSON")
+            else:
+                st.sidebar.error("Invalid JSON format.")
+        except Exception as e:
+            st.sidebar.error(f"Error reading JSON: {e}")
+
+# -----------------------------
+# Chat Tab
+# -----------------------------
+elif tab_choice == "💬 Chat":
     st.sidebar.subheader("💬 Shared Message Board")
+
+    # Remove messages older than 3 days
+    now = datetime.datetime.now()
+    messages[:] = [
+        m for m in messages
+        if (now - datetime.datetime.strptime(m["time"], "%Y-%m-%d %H:%M:%S")).days < 3
+    ]
+    save_messages()
 
     if messages:
         for msg in reversed(messages):
-            st.sidebar.markdown(
-                f"**{msg['user']}** [{msg['time']}]: {msg['text']}"
-            )
+            st.sidebar.markdown(f"**{msg['user']}** [{msg['time']}]: {msg['text']}")
     else:
         st.sidebar.info("No recent messages (messages auto-expire after 3 days).")
 
-    # Chat form
-    with st.sidebar.form("message_form", clear_on_submit=True):
-        user = st.text_input("Your name")
-        text = st.text_area("Your message")
-        submitted = st.form_submit_button("Send")
-        if submitted and user and text:
-            msg = {
-                "user": user.strip(),
-                "text": text.strip(),
-                "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            }
-            messages.append(msg)
-            save_messages()
-            st.sidebar.success("Message posted!")
+    if nickname:
+        with st.sidebar.form("message_form", clear_on_submit=True):
+            text = st.text_area("Your message", key="chat_text")
+            submitted = st.form_submit_button("Send")
+            if submitted and text:
+                msg = {
+                    "user": nickname,
+                    "text": text.strip(),
+                    "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                }
+                messages.append(msg)
+                save_messages()
+                st.sidebar.success("Message posted!")
+    else:
+        st.sidebar.info("Enter your email and choose a nickname to chat.")
 
-# --- Event Log Tab ---
+# -----------------------------
+# Event Log Tab
+# -----------------------------
 elif tab_choice == "📜 Event Log":
     st.sidebar.subheader("📜 Permanent Event Log")
     if events:
@@ -82,75 +198,6 @@ elif tab_choice == "📜 Event Log":
             st.sidebar.markdown(f"- {ev['time']}: {ev['action']}")
     else:
         st.sidebar.info("No events logged yet.")
-
-# --- Constants ---
-JSON_FILE = "civilizations.json"
-SUBCATEGORIES = ["Political", "Economic", "Religious", "Societal", "Intellectual", "Artistic", "Near"]
-
-# --- Load or initialize data ---
-if os.path.exists(JSON_FILE):
-    with open(JSON_FILE, "r") as f:
-        civilizations = json.load(f)
-else:
-    civilizations = {}  # { "Qin": { "Political": [], ... } }
-
-def save_data():
-    with open(JSON_FILE, "w") as f:
-        json.dump(civilizations, f, indent=2)
-
-# --- Sidebar: Manage civilizations ---
-st.sidebar.title("Civilizations Editor")
-
-# Add new civilization
-new_civ = st.sidebar.text_input("Add new civilization:")
-if new_civ:
-    if new_civ not in civilizations:
-        civilizations[new_civ] = {sub: [] for sub in SUBCATEGORIES}
-        save_data()
-        st.sidebar.success(f"Added {new_civ}")
-
-# Select civilization to edit
-edit_civ = st.sidebar.selectbox("Select civilization to edit:", [""] + list(civilizations.keys()))
-if edit_civ:
-    for sub in SUBCATEGORIES:
-        items = st.sidebar.text_area(f"{edit_civ} - {sub}", value=", ".join(civilizations[edit_civ][sub]))
-        civilizations[edit_civ][sub] = [i.strip() for i in items.split(",") if i.strip()]
-    save_data()
-
-# Delete civilization
-delete_civ = st.sidebar.selectbox("Delete civilization:", [""] + list(civilizations.keys()))
-if delete_civ:
-    if st.sidebar.button(f"Delete {delete_civ}"):
-        civilizations.pop(delete_civ)
-        save_data()
-        st.sidebar.warning(f"{delete_civ} deleted.")
-
-# --- JSON Export / Import ---
-st.sidebar.markdown("---")
-st.sidebar.subheader("Backup / Restore")
-
-# Download button
-if civilizations:
-    st.sidebar.download_button(
-        label="Download JSON",
-        data=json.dumps(civilizations, indent=2),
-        file_name="civilizations.json",
-        mime="application/json"
-    )
-
-# Upload button
-uploaded_file = st.sidebar.file_uploader("Upload JSON to restore", type=["json"])
-if uploaded_file is not None:
-    try:
-        data = json.load(uploaded_file)
-        if isinstance(data, dict):
-            civilizations = data
-            save_data()
-            st.sidebar.success("Data restored from JSON!")
-        else:
-            st.sidebar.error("Invalid JSON format.")
-    except Exception as e:
-        st.sidebar.error(f"Error reading JSON: {e}")
 
 # --- Main panel: Venn diagram ---
 st.title("Ancient Civilizations Venn Diagram")
