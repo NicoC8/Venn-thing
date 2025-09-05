@@ -78,7 +78,7 @@ def save_users():
 if "user_email" not in st.session_state:
     st.session_state["user_email"] = ""
 
-st.sidebar.text_input("Enter your email:", key="user_email")
+st.sidebar.text_input("Enter your email (sign in):", key="user_email")
 
 nickname = None
 if st.session_state["user_email"]:
@@ -98,13 +98,13 @@ if st.session_state["user_email"]:
 # -----------------------------
 # Sidebar tabs
 # -----------------------------
-tab_choice = st.sidebar.radio("📂 Sidebar Options", ["🗂 Civilizations", "💬 Chat", "📜 Event Log"])
+tab_choice = st.sidebar.radio("Sidebar Options", ["Civilizations", "Chat", "Event Log"])
 
 # -----------------------------
 # Civilization Editor Tab
 # -----------------------------
-if tab_choice == "🗂 Civilizations":
-    st.sidebar.subheader("➕ Add Civilization")
+if tab_choice == "Civilizations":
+    st.sidebar.subheader("Add Civilization")
     new_civ = st.text_input("Civilization Name", key="add_civ")
     if st.sidebar.button("Add Civilization"):
         if new_civ and new_civ not in civilizations:
@@ -113,7 +113,7 @@ if tab_choice == "🗂 Civilizations":
             save_event(f"Added civilization '{new_civ}'")
             st.sidebar.success(f"Civilization '{new_civ}' added!")
 
-    st.sidebar.subheader("🗑 Delete Civilization")
+    st.sidebar.subheader("Delete Civilization")
     if civilizations:
         delete_civ = st.sidebar.selectbox("Choose Civilization", list(civilizations.keys()), key="delete_civ")
         if st.sidebar.button("Delete Civilization"):
@@ -122,7 +122,7 @@ if tab_choice == "🗂 Civilizations":
             save_event(f"Deleted civilization '{delete_civ}'")
             st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
 
-    st.sidebar.subheader("✏️ Edit Civilization")
+    st.sidebar.subheader("Edit Civilization")
     if civilizations:
         edit_civ = st.sidebar.selectbox("Choose Civilization to Edit", list(civilizations.keys()), key="edit_civ")
         edit_sub = st.sidebar.selectbox("Choose Subcategory", ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], key="edit_sub")
@@ -132,8 +132,9 @@ if tab_choice == "🗂 Civilizations":
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'")
-            st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
-    st.sidebar.subheader("💾 Backup / Restore")
+            st.toast(f"Updated {edit_sub} for {edit_civ}")
+
+    st.sidebar.subheader("Backup / Restore")
     st.sidebar.download_button(
         label="Download JSON",
         data=json.dumps(civilizations, indent=2),
@@ -157,8 +158,8 @@ if tab_choice == "🗂 Civilizations":
 # -----------------------------
 # Chat Tab
 # -----------------------------
-elif tab_choice == "💬 Chat":
-    st.sidebar.subheader("💬 Shared Message Board")
+elif tab_choice == "Chat":
+    st.sidebar.subheader("Shared Message Board")
 
     # Remove messages older than 3 days
     now = datetime.datetime.now()
@@ -193,8 +194,8 @@ elif tab_choice == "💬 Chat":
 # -----------------------------
 # Event Log Tab
 # -----------------------------
-elif tab_choice == "📜 Event Log":
-    st.sidebar.subheader("📜 Permanent Event Log")
+elif tab_choice == "Event Log":
+    st.sidebar.subheader("Permanent Event Log")
     
     # Show events
     if events:
@@ -207,9 +208,9 @@ elif tab_choice == "📜 Event Log":
     ADMIN_EMAIL = "ncobb@cusd.me"  # change to your email
     if st.session_state.get("user_email") == ADMIN_EMAIL:
         st.sidebar.markdown("---")
-        st.sidebar.write("🛠 Admin Controls")
+        st.sidebar.write("Admin Controls")
         confirm_clear = st.sidebar.checkbox("Confirm clearing the event log", key="confirm_clear")
-        if confirm_clear and st.sidebar.button("🗑 Clear Event Log"):
+        if confirm_clear and st.sidebar.button("Clear Event Log"):
             events.clear()
             with open(EVENTS_FILE, "w") as f:
                 json.dump(events, f, indent=2)
