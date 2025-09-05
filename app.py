@@ -128,11 +128,10 @@ if tab_choice == "🗂 Civilizations":
         edit_sub = st.sidebar.selectbox("Choose Subcategory", ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], key="edit_sub")
         current_items = civilizations[edit_civ][edit_sub]
         new_items = st.sidebar.text_area("Enter items (comma-separated)", ", ".join(current_items), key="edit_items")
-        if st.sidebar.button("Save Changes"):
-            civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
-            save_data()
-            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'")
-            st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
+        civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
+        save_data()
+        save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'")
+        st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
 
     st.sidebar.subheader("💾 Backup / Restore")
     st.sidebar.download_button(
