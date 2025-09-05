@@ -11,6 +11,9 @@ import json
 import datetime
 import streamlit as st
 
+# Define subcategories globally
+SUBCATEGORIES = ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]
+
 # -----------------------------
 # File paths
 # -----------------------------
