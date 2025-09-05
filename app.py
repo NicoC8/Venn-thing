@@ -206,7 +206,8 @@ elif tab_choice == "Event Log":
     # Show events
     if events:
         for ev in reversed(events):
-            st.sidebar.markdown(f"- {ev['time']} — **{ev['user']}**: {ev['action']}")
+            user = ev.get("user", "Unknown")
+            st.sidebar.markdown(f"- {ev['time']} — **{user}**: {ev['action']}")
     else:
         st.sidebar.info("No events logged yet.")
     
