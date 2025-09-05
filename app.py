@@ -60,13 +60,16 @@ def save_messages():
     with open(MESSAGES_FILE, "w") as f:
         json.dump(messages, f, indent=2)
 
-def save_event(action: str):
+def save_event(action, user=None):
+    events = load_events()
     events.append({
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "action": action,
-        "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "user": user if user else "Unknown"
     })
     with open(EVENTS_FILE, "w") as f:
         json.dump(events, f, indent=2)
+
 
 def save_users():
     with open(USERS_FILE, "w") as f:
@@ -110,7 +113,8 @@ if tab_choice == "Civilizations":
         if new_civ and new_civ not in civilizations:
             civilizations[new_civ] = {sub: [] for sub in ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]}
             save_data()
-            save_event(f"Added civilization '{new_civ}'")
+            user = st.session_state.get("nickname") or st.session_state.get("user_email", "Unknown")
+            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             st.sidebar.success(f"Civilization '{new_civ}' added!")
 
     st.sidebar.subheader("Delete Civilization")
@@ -119,7 +123,8 @@ if tab_choice == "Civilizations":
         if st.sidebar.button("Delete Civilization"):
             del civilizations[delete_civ]
             save_data()
-            save_event(f"Deleted civilization '{delete_civ}'")
+            user = st.session_state.get("nickname") or st.session_state.get("user_email", "Unknown")
+            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
 
     st.sidebar.subheader("Edit Civilization")
@@ -131,7 +136,8 @@ if tab_choice == "Civilizations":
         if st.sidebar.button("Save Changes"):
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
-            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'")
+            user = st.session_state.get("nickname") or st.session_state.get("user_email", "Unknown")
+            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             st.toast(f"Updated {edit_sub} for {edit_civ}")
 
     st.sidebar.subheader("Backup / Restore")
@@ -200,7 +206,7 @@ elif tab_choice == "Event Log":
     # Show events
     if events:
         for ev in reversed(events):
-            st.sidebar.markdown(f"- {ev['time']}: {ev['action']}")
+            st.sidebar.markdown(f"- {ev['time']} — **{ev['user']}**: {ev['action']}")
     else:
         st.sidebar.info("No events logged yet.")
     
