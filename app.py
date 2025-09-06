@@ -63,7 +63,7 @@ def save_messages():
 def save_event(action, user=None):
     events = load_events()
     events.append({
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")[5:15],
         "action": action,
         "user": user if user else "Unknown"
     })
