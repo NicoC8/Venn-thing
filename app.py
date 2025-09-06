@@ -6,9 +6,11 @@ import os
 import textwrap
 import datetime
 from datetime import datetime
+from zoneinfo import ZoneInfo  # built-in in Python 3.9+
 
 # Define subcategories globally
 SUBCATEGORIES = ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]
+TIMEZONE = ZoneInfo("America/San_Fransisco")  # change to your desired timezone
 
 # -----------------------------
 # File paths
@@ -62,8 +64,9 @@ def load_events():
 
 def save_event(action, user=None):
     events = load_events()
-    # Format timestamp: MM-DD HH:MM
-    timestamp = datetime.now().strftime("%m-%d %H:%M")
+    # Get current time in desired timezone
+    now = datetime.now(TIMEZONE)
+    timestamp = now.strftime("%m-%d %H:%M")  # month-day hour:minute
     events.append({
         "time": timestamp,
         "action": action,
