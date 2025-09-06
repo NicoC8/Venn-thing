@@ -7,7 +7,7 @@ import textwrap
 import datetime
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo  # built-in in Python 3.9+
-
+import gspread
 # Define subcategories globally
 SUBCATEGORIES = ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]
 TIMEZONE = ZoneInfo("America/Los_Angeles")  # change to your desired timezone
