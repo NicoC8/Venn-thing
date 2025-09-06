@@ -25,7 +25,9 @@ USERS_FILE = "users.json"
 # -----------------------------
 if os.path.exists(CIV_FILE):
     with open(CIV_FILE, "r") as f:
-        categories = json.load(f)
+        civilizations = json.load(f)
+else:
+    civilizations = {}  # fallback if the file doesn't exist
 else:
     categories = {}  # fallback if file doesn't exist
 
