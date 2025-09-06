@@ -131,7 +131,7 @@ if tab_choice == "Civilizations":
         if new_civ and new_civ not in civilizations:
             civilizations[new_civ] = {sub: [] for sub in ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]}
             save_data()
-            user = st.session_state.get("nickname") or st.session_state.get("user_email", "Unknown")
+            user = st.session_state.get("nickname", "Unknown")
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             st.sidebar.success(f"Civilization '{new_civ}' added!")
 
@@ -141,7 +141,7 @@ if tab_choice == "Civilizations":
         if st.sidebar.button("Delete Civilization"):
             del civilizations[delete_civ]
             save_data()
-            user = st.session_state.get("nickname") or st.session_state.get("user_email", "Unknown")
+            user = st.session_state.get("nickname", "Unknown")
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
 
@@ -154,7 +154,7 @@ if tab_choice == "Civilizations":
         if st.sidebar.button("Save Changes"):
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
-            user = st.session_state.get("nickname") or st.session_state.get("user_email", "Unknown")
+            user = st.session_state.get("nickname", "Unknown")
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             st.toast(f"Updated {edit_sub} for {edit_civ}")
 
