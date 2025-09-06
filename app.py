@@ -158,7 +158,7 @@ if tab_choice == "Civilizations":
         edit_civ = st.sidebar.selectbox("Choose Civilization to Edit", list(civilizations.keys()), key="edit_civ")
         edit_sub = st.sidebar.selectbox(
             "Choose Subcategory", 
-            ["", "Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], 
+            ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], 
             key="edit_sub"
         )
         current_items = civilizations[edit_civ][edit_sub]
