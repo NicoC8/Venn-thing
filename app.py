@@ -209,7 +209,10 @@ elif tab_choice == "Chat":
                 break
             except ValueError:
                 continue
-        if ts and ts >= three_days_ago:
+        if ts is None:
+            # Skip messages that can't be parsed
+            continue
+        if ts >= three_days_ago:
             recent_messages.append(m)
 
     # Overwrite messages with only recent ones
