@@ -62,8 +62,10 @@ def load_events():
 
 def save_event(action, user=None):
     events = load_events()
+    # Format timestamp: MM-DD HH:MM
+    timestamp = datetime.now().strftime("%m-%d %H:%M")
     events.append({
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "time": timestamp,
         "action": action,
         "user": user if user else "Unknown"
     })
