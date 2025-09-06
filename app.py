@@ -184,7 +184,7 @@ def save_event(action, user=None):
 #sh = gc.open("CivilizationsDB")   # Sheet name
 #worksheet = sh.sheet1
 
-def save_data(civilizations):
+def save_data():
     # Flatten dict into rows
     #rows = []
     #for civ, subs in civilizations.items():
