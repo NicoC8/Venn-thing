@@ -145,7 +145,7 @@ if tab_choice == "Civilizations":
 
     st.sidebar.subheader("Delete Civilization")
     if civilizations:
-        delete_civ = st.sidebar.selectbox("Choose Civilization", list(civilizations.keys()), key="delete_civ")
+        delete_civ = st.sidebar.selectbox("Choose Civilization", "" + list(civilizations.keys()), key="delete_civ")
         if st.sidebar.button("Delete Civilization"):
             del civilizations[delete_civ]
             save_data()
@@ -155,14 +155,10 @@ if tab_choice == "Civilizations":
 
     st.sidebar.subheader("Edit Civilization")
     if civilizations:
-        edit_civ = st.sidebar.selectbox(
-            "Choose Civilization to Edit", 
-            list(civilizations.keys()), 
-            key="edit_civ"
-        )
+        edit_civ = st.sidebar.selectbox("Choose Civilization to Edit", "" + list(civilizations.keys()), key="edit_civ")
         edit_sub = st.sidebar.selectbox(
             "Choose Subcategory", 
-            ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], 
+            ["", "Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], 
             key="edit_sub"
         )
         current_items = civilizations[edit_civ][edit_sub]
