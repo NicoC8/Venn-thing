@@ -189,7 +189,7 @@ elif tab_choice == "Chat":
     now = datetime.now()
     messages[:] = [
         m for m in messages
-        if (now - datetime.datetime.strptime(m["time"], "%Y-%m-%d %H:%M:%S")).days < 3
+        if (now - datetime.strptime(m["time"], "%Y-%m-%d %H:%M:%S")).days < 3
     ]
     save_messages()
 
@@ -207,7 +207,7 @@ elif tab_choice == "Chat":
                 msg = {
                     "user": nickname,
                     "text": text.strip(),
-                    "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 }
                 messages.append(msg)
                 save_messages()
