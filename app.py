@@ -137,7 +137,23 @@ else:
 # -----------------------------
 # Helper functions
 # -----------------------------
+import pandas as pd
 
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1kPbvMwDIqnbk-uN3PmXx-NOWqafVvX-VSUZlUPBBoFY/pub?output=csv"
+
+def load_data():
+    try:
+        df = pd.read_csv(SHEET_URL)
+        civilizations = {}
+        for _, row in df.iterrows():
+            civ = row["Civilization"]
+            sub = row["Subcategory"]
+            items = [i.strip() for i in str(row["Items"]).split(",") if i.strip()]
+            civilizations.setdefault(civ, {})[sub] = items
+        return civilizations
+    except Exception:
+        return {}  # empty if sheet is blank
+        
 def load_events():
     if os.path.exists(EVENTS_FILE):
         with open(EVENTS_FILE, "r") as f:
@@ -161,8 +177,24 @@ def save_event(action, user=None):
     })
     with open(EVENTS_FILE, "w") as f:
         json.dump(events, f, indent=2)
-        
-def save_data():
+        import gspread
+
+# authenticate once with your credentials.json
+gc = gspread.service_account(filename="credentials.json")
+sh = gc.open("CivilizationsDB")   # Sheet name
+worksheet = sh.sheet1
+
+def save_data(civilizations):
+    # Flatten dict into rows
+    rows = []
+    for civ, subs in civilizations.items():
+        for sub, items in subs.items():
+            rows.append([civ, sub, ", ".join(items)])
+
+    # Rewrite the sheet
+    worksheet.clear()
+    worksheet.append_row(["Civilization", "Subcategory", "Items"])  # header
+    worksheet.append_rows(rows)
     with open(CIV_FILE, "w") as f:
         json.dump(civilizations, f, indent=2)
 
