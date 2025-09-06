@@ -192,10 +192,13 @@ elif tab_choice == "Chat":
     st.sidebar.subheader("Shared Message Board")
 
     # Remove messages older than 3 days
-    now = datetime.now()
-    messages[:] = [
+    from datetime import timedelta
+
+    now = datetime.now(TIMEZONE)
+    three_days_ago = now - timedelta(days=3)
+    recent_messages = [
         m for m in messages
-        if (now - datetime.strptime(m["time"], "%Y-%m-%d %H:%M")).days < 3
+        if datetime.strptime(f"{now.year}-{m['time']}", "%Y-%m-%d %H:%M") >= three_days_ago
     ]
     save_messages()
 
