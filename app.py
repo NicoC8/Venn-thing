@@ -7,7 +7,7 @@ import textwrap
 import datetime
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo  # built-in in Python 3.9+
-import gspread
+#import gspread
 # Define subcategories globally
 SUBCATEGORIES = ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]
 TIMEZONE = ZoneInfo("America/Los_Angeles")  # change to your desired timezone
@@ -186,15 +186,15 @@ worksheet = sh.sheet1
 
 def save_data(civilizations):
     # Flatten dict into rows
-    rows = []
-    for civ, subs in civilizations.items():
-        for sub, items in subs.items():
-            rows.append([civ, sub, ", ".join(items)])
+    #rows = []
+    #for civ, subs in civilizations.items():
+    #    for sub, items in subs.items():
+    #        rows.append([civ, sub, ", ".join(items)])
 
     # Rewrite the sheet
-    worksheet.clear()
-    worksheet.append_row(["Civilization", "Subcategory", "Items"])  # header
-    worksheet.append_rows(rows)
+    #worksheet.clear()
+    #worksheet.append_row(["Civilization", "Subcategory", "Items"])  # header
+    #worksheet.append_rows(rows)
     with open(CIV_FILE, "w") as f:
         json.dump(civilizations, f, indent=2)
 
