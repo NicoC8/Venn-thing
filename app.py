@@ -101,11 +101,11 @@ if "user_email" not in st.session_state:
 
 st.sidebar.text_input("Enter your email (sign in):", key="user_email")
 
-nickname = None
 if st.session_state["user_email"]:
     email = st.session_state["user_email"].strip()
     if email in users:
-        nickname = users[email]
+        # Load existing nickname into session_state
+        st.session_state["nickname"] = users[email]
     else:
         with st.sidebar.form("nickname_form"):
             new_nick = st.text_input("Choose a nickname")
@@ -113,8 +113,9 @@ if st.session_state["user_email"]:
             if submitted and new_nick.strip():
                 users[email] = new_nick.strip()
                 save_users()
-                nickname = users[email]
-                st.sidebar.success(f"Nickname '{nickname}' saved!")
+                st.session_state["nickname"] = new_nick.strip()  # <-- store in session_state
+                st.sidebar.success(f"Nickname '{st.session_state['nickname']}' saved!")
+
 
 # -----------------------------
 # Sidebar tabs
