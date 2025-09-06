@@ -191,25 +191,31 @@ if tab_choice == "Civilizations":
 elif tab_choice == "Chat":
     st.sidebar.subheader("Shared Message Board")
 
-    # Current time in S.F. timezone
+    # Current time
     now = datetime.now(TIMEZONE)
     three_days_ago = now - timedelta(days=3)
 
-    # Filter messages from the last 3 days
+    # Filter messages from the last 3 days, robust to different timestamp formats
     recent_messages = []
     for m in messages:
-        # Check if timestamp has no year (MM-DD HH:MM)
-        if len(m["time"].split("-")[0]) == 2:
-            ts_str = f"{now.year}-{m['time']}"  # e.g. "2025-09-05 17:36"
-            ts = datetime.strptime(ts_str, "%Y-%m-%d %H:%M")
-        else:
-            ts = datetime.strptime(m["time"], "%Y-%m-%d %H:%M")
-        if ts >= three_days_ago:
+        ts_str = m["time"].strip()
+        ts = None
+        for fmt in ("%m-%d %H:%M", "%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S"):
+            try:
+                if fmt == "%m-%d %H:%M":
+                    ts = datetime.strptime(f"{now.year}-{ts_str}", "%Y-%m-%d %H:%M")
+                else:
+                    ts = datetime.strptime(ts_str, fmt)
+                break
+            except ValueError:
+                continue
+        if ts and ts >= three_days_ago:
             recent_messages.append(m)
 
-    # Save filtered messages (optional: overwrite to remove older ones)
+    # Overwrite messages with only recent ones
     messages = recent_messages
-    save_messages()
+    with open(MESSAGES_FILE, "w") as f:
+        json.dump(messages, f, indent=2)
 
     # Display recent messages
     if recent_messages:
@@ -219,24 +225,23 @@ elif tab_choice == "Chat":
         st.sidebar.info("No recent messages (messages auto-expire after 3 days).")
 
     # Chat input form
-    if nickname:
+    if "nickname" in st.session_state and st.session_state["nickname"]:
         with st.sidebar.form("message_form", clear_on_submit=True):
             text = st.text_area("Your message", key="chat_text")
             submitted = st.form_submit_button("Send")
             if submitted and text:
-                # Timestamp in MM-DD HH:MM format, Pacific Time
                 ts = datetime.now(TIMEZONE).strftime("%m-%d %H:%M")
                 msg = {
-                    "user": nickname,
+                    "user": st.session_state["nickname"],
                     "text": text.strip(),
                     "time": ts
                 }
                 messages.append(msg)
-                save_messages()
+                with open(MESSAGES_FILE, "w") as f:
+                    json.dump(messages, f, indent=2)
                 st.sidebar.success("Message posted!")
     else:
         st.sidebar.info("Enter your email and choose a nickname to chat.")
-
 # -----------------------------
 # Event Log Tab
 # -----------------------------
