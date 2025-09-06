@@ -180,9 +180,9 @@ def save_event(action, user=None):
         import gspread
 
 # authenticate once with your credentials.json
-gc = gspread.service_account(filename="credentials.json")
-sh = gc.open("CivilizationsDB")   # Sheet name
-worksheet = sh.sheet1
+#gc = gspread.service_account(filename="credentials.json")
+#sh = gc.open("CivilizationsDB")   # Sheet name
+#worksheet = sh.sheet1
 
 def save_data(civilizations):
     # Flatten dict into rows
