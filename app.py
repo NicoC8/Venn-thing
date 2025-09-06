@@ -5,11 +5,7 @@ import json
 import os
 import textwrap
 import datetime
-
-import os
-import json
-import datetime
-import streamlit as st
+from datetime import datetime
 
 # Define subcategories globally
 SUBCATEGORIES = ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]
