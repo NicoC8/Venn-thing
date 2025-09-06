@@ -134,7 +134,7 @@ tab_choice = st.sidebar.radio("Sidebar Options", ["Civilizations", "Chat", "Even
 # -----------------------------
 if tab_choice == "Civilizations":
     st.sidebar.subheader("Add Civilization")
-    new_civ = st.text_input("Civilization Name", key="add_civ")
+    new_civ = st.sidebar.text_input("Civilization Name", key="add_civ")
     if st.sidebar.button("Add Civilization"):
         if new_civ and new_civ not in civilizations:
             civilizations[new_civ] = {sub: [] for sub in ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]}
