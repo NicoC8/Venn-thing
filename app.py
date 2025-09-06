@@ -25,9 +25,9 @@ USERS_FILE = "users.json"
 # -----------------------------
 if os.path.exists(CIV_FILE):
     with open(CIV_FILE, "r") as f:
-        civilizations = json.load(f)
+        categories = json.load(f)
 else:
-    civilizations = {}  # { civ_name: { subcategory: [items] } }
+    categories = {}  # fallback if file doesn't exist
 
 if not os.path.exists(MESSAGES_FILE):
     messages = []
@@ -93,11 +93,13 @@ def save_event(action, user=None):
     with open(EVENTS_FILE, "w") as f:
         json.dump(events, f, indent=2)
 
-
 def save_users():
     with open(USERS_FILE, "w") as f:
         json.dump(users, f, indent=2)
-
+        
+def save_categories():
+    with open(CIV_FILE, "w") as f:
+        json.dump(categories, f, indent=2)
 # -----------------------------
 # Session state for email
 # -----------------------------
@@ -153,17 +155,37 @@ if tab_choice == "Civilizations":
 
     st.sidebar.subheader("Edit Civilization")
     if civilizations:
-        edit_civ = st.sidebar.selectbox("Choose Civilization to Edit", list(civilizations.keys()), key="edit_civ")
-        edit_sub = st.sidebar.selectbox("Choose Subcategory", ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], key="edit_sub")
+        edit_civ = st.sidebar.selectbox(
+            "Choose Civilization to Edit", 
+            list(civilizations.keys()), 
+            key="edit_civ"
+        )
+        edit_sub = st.sidebar.selectbox(
+            "Choose Subcategory", 
+            ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], 
+            key="edit_sub"
+        )
         current_items = civilizations[edit_civ][edit_sub]
-        new_items = st.sidebar.text_area("Enter items (comma-separated)", ", ".join(current_items), key="edit_items")
+        new_items = st.sidebar.text_area(
+            "Enter items (comma-separated)", 
+            ", ".join(current_items), 
+            key="edit_items"
+        )
+        
         if st.sidebar.button("Save Changes"):
+            # Update the in-memory dictionary
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
+            
+            # Persist to CIV_FILE
             save_data()
+            
+            # Log the edit event
             user = st.session_state.get("nickname", "Unknown")
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+            
+            # Notify user
             st.toast(f"Updated {edit_sub} for {edit_civ}")
-
+    
     st.sidebar.subheader("Backup / Restore")
     st.sidebar.download_button(
         label="Download JSON",
