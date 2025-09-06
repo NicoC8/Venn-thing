@@ -186,7 +186,7 @@ elif tab_choice == "Chat":
     st.sidebar.subheader("Shared Message Board")
 
     # Remove messages older than 3 days
-    now = datetime.datetime.now()
+    now = datetime.now()
     messages[:] = [
         m for m in messages
         if (now - datetime.datetime.strptime(m["time"], "%Y-%m-%d %H:%M:%S")).days < 3
