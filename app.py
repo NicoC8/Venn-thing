@@ -28,8 +28,6 @@ if os.path.exists(CIV_FILE):
         civilizations = json.load(f)
 else:
     civilizations = {}  # fallback if the file doesn't exist
-else:
-    categories = {}  # fallback if file doesn't exist
 
 if not os.path.exists(MESSAGES_FILE):
     messages = []
