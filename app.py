@@ -197,24 +197,25 @@ elif tab_choice == "Chat":
 
     # Filter messages from the last 3 days, robust to different timestamp formats
     recent_messages = []
-    for m in messages:
-        ts_str = m["time"].strip()
-        ts = None
-        for fmt in ("%m-%d %H:%M", "%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S"):
-            try:
-                if fmt == "%m-%d %H:%M":
-                    ts = datetime.strptime(f"{now.year}-{ts_str}", "%Y-%m-%d %H:%M")
-                else:
-                    ts = datetime.strptime(ts_str, fmt)
-                break
-            except ValueError:
-                continue
-        if ts is None:
-            # Skip messages that can't be parsed
-            continue
-        if ts >= three_days_ago:
-            recent_messages.append(m)
 
+for m in messages:
+    ts_str = m["time"].strip()
+    ts = None
+    for fmt in ("%m-%d %H:%M", "%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S"):
+        try:
+            if fmt == "%m-%d %H:%M":
+                ts_naive = datetime.strptime(f"{now.year}-{ts_str}", "%Y-%m-%d %H:%M")
+            else:
+                ts_naive = datetime.strptime(ts_str, fmt)
+            # Make it timezone-aware
+            ts = ts_naive.replace(tzinfo=TIMEZONE)
+            break
+        except ValueError:
+            continue
+    if ts is None:
+        continue
+    if ts >= three_days_ago:
+        recent_messages.append(m)
     # Overwrite messages with only recent ones
     messages = recent_messages
     with open(MESSAGES_FILE, "w") as f:
