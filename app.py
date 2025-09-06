@@ -195,7 +195,7 @@ elif tab_choice == "Chat":
     now = datetime.now()
     messages[:] = [
         m for m in messages
-        if (now - datetime.strptime(m["time"], "%m-%d %H:%M")).days < 3
+        if (now - datetime.strptime(m["time"], "%Y-%m-%d %H:%M")).days < 3
     ]
     save_messages()
 
