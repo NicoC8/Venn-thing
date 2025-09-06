@@ -23,11 +23,98 @@ USERS_FILE = "users.json"
 # -----------------------------
 # Load or initialize data
 # -----------------------------
-if os.path.exists(CIV_FILE):
-    with open(CIV_FILE, "r") as f:
-        civilizations = json.load(f)
-else:
-    civilizations = {}  # fallback if the file doesn't exist
+if not os.path.exists(CIV_FILE):
+    SUBCATEGORIES = ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]
+    default_civilizations = {
+    "Qin": {
+        "Political": ["emperor", "Legalism", "centralized"],
+        "Economic": ["currency"],
+        "Religious": ["Confucianism"],
+        "Societal": ["forced labor"],
+        "Intellectual": ["script"],
+        "Artistic": ["Terracotta Army"],
+        "Near": ["Han"]
+    },
+    "Han": {
+        "Political": ["Confucian bureaucracy", "centralized", "emperor"],
+        "Economic": ["Silk Road"],
+        "Religious": ["Confucianism"],
+        "Societal": ["civil exams"],
+        "Intellectual": ["paper"],
+        "Artistic": ["records"],
+        "Near": ["Rome"]
+    },
+    "Rome": {
+        "Political": ["Senate", "emperor", "republic"],
+        "Economic": ["Mediterranean trade"],
+        "Religious": ["polytheism"],
+        "Societal": ["slavery"],
+        "Intellectual": ["law codes"],
+        "Artistic": ["Colosseum"],
+        "Near": ["Han"]
+    },
+    "Greece": {
+        "Political": ["city-states", "democracy (Athens)"],
+        "Economic": ["Mediterranean trade", "agriculture"],
+        "Religious": ["polytheism"],
+        "Societal": ["slavery"],
+        "Intellectual": ["philosophy"],
+        "Artistic": ["Parthenon"],
+        "Near": ["Rome"]
+    },
+    "Maurya": {
+        "Political": ["centralized monarchy"],
+        "Economic": ["trade"],
+        "Religious": ["Buddhism"],
+        "Societal": ["caste system"],
+        "Intellectual": ["Arthashastra"],
+        "Artistic": ["stupas"],
+        "Near": ["Hellenistic"]
+    },
+    "Gupta": {
+        "Political": ["monarchy"],
+        "Economic": ["Silk Road"],
+        "Religious": ["Hinduism"],
+        "Societal": ["caste system"],
+        "Intellectual": ["decimal system"],
+        "Artistic": ["Ajanta caves"],
+        "Near": ["Rome"]
+    },
+    "Egypt": {
+        "Political": ["pharaohs"],
+        "Economic": ["Nile agriculture"],
+        "Religious": ["polytheism"],
+        "Societal": ["hierarchy"],
+        "Intellectual": ["hieroglyphics"],
+        "Artistic": ["pyramids"],
+        "Near": ["Mesopotamia"]
+    },
+    "Babylon": {
+        "Political": ["monarchy"],
+        "Economic": ["trade"],
+        "Religious": ["polytheism"],
+        "Societal": ["class divisions"],
+        "Intellectual": ["astronomy"],
+        "Artistic": ["Ishtar Gate"],
+        "Near": ["Persia"]
+    },
+    "Persia": {
+        "Political": ["monarchy"],
+        "Economic": ["coinage"],
+        "Religious": ["Zoroastrianism"],
+        "Societal": ["multicultural empire"],
+        "Intellectual": ["engineering"],
+        "Artistic": ["Persepolis"],
+        "Near": ["Greece"]
+    }
+}
+
+    with open(CIV_FILE, "w") as f:
+        json.dump(default_civilizations, f, indent=2)
+
+# Load the current data
+with open(CIV_FILE, "r") as f:
+    civilizations = json.load(f)
 
 if not os.path.exists(MESSAGES_FILE):
     messages = []
