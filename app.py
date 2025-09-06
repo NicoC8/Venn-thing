@@ -28,16 +28,16 @@ if not os.path.exists(CIV_FILE):
     default_civilizations = {
     "Qin": {
         "Political": ["emperor", "Legalism", "centralized"],
-        "Economic": ["currency"],
+        "Economic": ["currency", "Silk Road trade"],
         "Religious": ["Confucianism"],
         "Societal": ["forced labor"],
         "Intellectual": ["script"],
         "Artistic": ["Terracotta Army"],
-        "Near": ["Han"]
+        "Near": ["Yellow River"]
     },
     "Han": {
         "Political": ["Confucian bureaucracy", "centralized", "emperor"],
-        "Economic": ["Silk Road"],
+        "Economic": ["Silk Road trade"],
         "Religious": ["Confucianism"],
         "Societal": ["civil exams"],
         "Intellectual": ["paper"],
