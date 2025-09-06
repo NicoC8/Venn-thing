@@ -52,6 +52,28 @@ else:
 # -----------------------------
 # Helper functions
 # -----------------------------
+
+def load_events():
+    if os.path.exists(EVENTS_FILE):
+        with open(EVENTS_FILE, "r") as f:
+            events = json.load(f)
+        # Ensure all events have a "user" field
+        for ev in events:
+            if "user" not in ev:
+                ev["user"] = "Unknown"
+        return events
+    return []
+
+def save_event(action, user=None):
+    events = load_events()
+    events.append({
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "action": action,
+        "user": user if user else "Unknown"
+    })
+    with open(EVENTS_FILE, "w") as f:
+        json.dump(events, f, indent=2)
+        
 def save_data():
     with open(CIV_FILE, "w") as f:
         json.dump(civilizations, f, indent=2)
