@@ -5,7 +5,7 @@ import json
 import os
 import textwrap
 import datetime
-from datetime import datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo  # built-in in Python 3.9+
 
 # Define subcategories globally
@@ -29,11 +29,11 @@ if os.path.exists(CIV_FILE):
 else:
     civilizations = {}  # { civ_name: { subcategory: [items] } }
 
-if os.path.exists(MESSAGES_FILE):
+if not os.path.exists(MESSAGES_FILE):
+    messages = []
+else:
     with open(MESSAGES_FILE, "r") as f:
         messages = json.load(f)
-else:
-    messages = []
 
 if os.path.exists(EVENTS_FILE):
     with open(EVENTS_FILE, "r") as f:
@@ -191,32 +191,45 @@ if tab_choice == "Civilizations":
 elif tab_choice == "Chat":
     st.sidebar.subheader("Shared Message Board")
 
-    # Remove messages older than 3 days
-    from datetime import timedelta
-
+    # Current time in S.F. timezone
     now = datetime.now(TIMEZONE)
     three_days_ago = now - timedelta(days=3)
-    recent_messages = [
-        m for m in messages
-        if datetime.strptime(f"{now.year}-{m['time']}", "%Y-%m-%d %H:%M") >= three_days_ago
-    ]
+
+    # Filter messages from the last 3 days
+    recent_messages = []
+    for m in messages:
+        # Check if timestamp has no year (MM-DD HH:MM)
+        if len(m["time"].split("-")[0]) == 2:
+            ts_str = f"{now.year}-{m['time']}"  # e.g. "2025-09-05 17:36"
+            ts = datetime.strptime(ts_str, "%Y-%m-%d %H:%M")
+        else:
+            ts = datetime.strptime(m["time"], "%Y-%m-%d %H:%M")
+        if ts >= three_days_ago:
+            recent_messages.append(m)
+
+    # Save filtered messages (optional: overwrite to remove older ones)
+    messages = recent_messages
     save_messages()
 
-    if messages:
-        for msg in reversed(messages):
+    # Display recent messages
+    if recent_messages:
+        for msg in reversed(recent_messages):
             st.sidebar.markdown(f"**{msg['user']}** [{msg['time']}]: {msg['text']}")
     else:
         st.sidebar.info("No recent messages (messages auto-expire after 3 days).")
 
+    # Chat input form
     if nickname:
         with st.sidebar.form("message_form", clear_on_submit=True):
             text = st.text_area("Your message", key="chat_text")
             submitted = st.form_submit_button("Send")
             if submitted and text:
+                # Timestamp in MM-DD HH:MM format, Pacific Time
+                ts = datetime.now(TIMEZONE).strftime("%m-%d %H:%M")
                 msg = {
                     "user": nickname,
                     "text": text.strip(),
-                    "time": datetime.now().strftime("%m-%d %H:%M")
+                    "time": ts
                 }
                 messages.append(msg)
                 save_messages()
