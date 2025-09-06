@@ -83,7 +83,7 @@ def save_messages():
 def save_event(action, user=None):
     events = load_events()
     events.append({
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "time": datetime.now().strftime("%m-%d %H:%M"),
         "action": action,
         "user": user if user else "Unknown"
     })
@@ -192,7 +192,7 @@ elif tab_choice == "Chat":
     now = datetime.now()
     messages[:] = [
         m for m in messages
-        if (now - datetime.strptime(m["time"], "%Y-%m-%d %H:%M:%S")).days < 3
+        if (now - datetime.strptime(m["time"], "%m-%d %H:%M")).days < 3
     ]
     save_messages()
 
@@ -210,7 +210,7 @@ elif tab_choice == "Chat":
                 msg = {
                     "user": nickname,
                     "text": text.strip(),
-                    "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    "time": datetime.now().strftime("%m-%d %H:%M")
                 }
                 messages.append(msg)
                 save_messages()
