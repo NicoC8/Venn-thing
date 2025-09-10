@@ -28,55 +28,55 @@ if not os.path.exists(CIV_FILE):
     default_civilizations = {
     "Qin": {
         "Political": ["emperor", "Legalism", "centralized"],
-        "Economic": ["currency", "Silk Road trade"],
+        "Economic": ["currency"],
         "Religious": ["Confucianism"],
-        "Societal": ["forced labor"],
+        "Societal": ["forced labor", "warriors valued"],
         "Intellectual": ["script"],
         "Artistic": ["Terracotta Army"],
-        "Near": ["Yellow River"]
+        "Near": ["India"]
     },
     "Han": {
         "Political": ["Confucian bureaucracy", "centralized", "emperor"],
-        "Economic": ["Silk Road trade"],
+        "Economic": ["Silk Road"],
         "Religious": ["Confucianism"],
-        "Societal": ["civil exams"],
+        "Societal": ["civil exams", "warriors valued"],
         "Intellectual": ["paper"],
         "Artistic": ["records"],
-        "Near": ["Rome"]
+        "Near": ["Rome", "India"]
     },
     "Rome": {
-        "Political": ["Senate", "emperor", "republic"],
-        "Economic": ["Mediterranean trade"],
+        "Political": ["Senate", "emperor", "regional", "centralized"],
+        "Economic": ["Mediterranean trade", "agriculture"],
         "Religious": ["polytheism"],
-        "Societal": ["slavery"],
+        "Societal": ["slavery", "warriors valued"],
         "Intellectual": ["law codes"],
         "Artistic": ["Colosseum"],
         "Near": ["Han"]
     },
     "Greece": {
-        "Political": ["city-states", "democracy (Athens)"],
+        "Political": ["city-states", "democracy (Athens)", "regional"],
         "Economic": ["Mediterranean trade", "agriculture"],
         "Religious": ["polytheism"],
-        "Societal": ["slavery"],
-        "Intellectual": ["philosophy"],
-        "Artistic": ["Parthenon"],
+        "Societal": ["slavery", "intellectuals valued", "warriors valued"],
+        "Intellectual": ["philosophy", "math", "geometry", "architecture"],
+        "Artistic": ["Parthenon", "religious"],
         "Near": ["Rome"]
     },
     "Maurya": {
-        "Political": ["centralized monarchy"],
+        "Political": ["centralized", "monarchy"],
         "Economic": ["trade"],
         "Religious": ["Buddhism"],
         "Societal": ["caste system"],
-        "Intellectual": ["Arthashastra"],
+        "Intellectual": ["Arthashastra", "math"],
         "Artistic": ["stupas"],
         "Near": ["Hellenistic"]
     },
     "Gupta": {
-        "Political": ["monarchy"],
+        "Political": ["monarchy", "regional"],
         "Economic": ["Silk Road"],
         "Religious": ["Hinduism"],
         "Societal": ["caste system"],
-        "Intellectual": ["decimal system"],
+        "Intellectual": ["math"],
         "Artistic": ["Ajanta caves"],
         "Near": ["Rome"]
     },
@@ -85,29 +85,39 @@ if not os.path.exists(CIV_FILE):
         "Economic": ["Nile agriculture"],
         "Religious": ["polytheism"],
         "Societal": ["hierarchy"],
-        "Intellectual": ["hieroglyphics"],
+        "Intellectual": ["hieroglyphics", "architecture"],
         "Artistic": ["pyramids"],
         "Near": ["Mesopotamia"]
     },
     "Babylon": {
-        "Political": ["monarchy"],
+        "Political": ["monarchy", "centralized"],
         "Economic": ["trade"],
         "Religious": ["polytheism"],
         "Societal": ["class divisions"],
         "Intellectual": ["astronomy"],
         "Artistic": ["Ishtar Gate"],
-        "Near": ["Persia"]
+        "Near": ["India"]
     },
     "Persia": {
-        "Political": ["monarchy"],
+        "Political": ["monarchy", "centralized"],
         "Economic": ["coinage"],
         "Religious": ["Zoroastrianism"],
         "Societal": ["multicultural empire"],
         "Intellectual": ["engineering"],
         "Artistic": ["Persepolis"],
-        "Near": ["Greece"]
+        "Near": ["Greece", "India"]
+    },
+    "Umayya": {
+        "Political": ["centralized", "caliphate"],
+        "Economic": ["agriculture", "Indian Ocean trade"],
+        "Religious": ["Islam", "tolerant"],
+        "Societal": ["gender equality", "warriors valued", "merchants valued"],
+        "Intellectual": ["borrowed", "architecture"],
+        "Artistic": ["religious", "colorful", "mosaics"],
+        "Near": ["Indonesia", "India", "Persia", "Byzantines"]
     }
 }
+
 
     with open(CIV_FILE, "w") as f:
         json.dump(default_civilizations, f, indent=2)
