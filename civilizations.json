@@ -107,7 +107,7 @@
       "monarchy"
     ],
     "Economic": [
-      "trade"
+      "Indian Ocean trade", "agriculture"
     ],
     "Religious": [
       "Buddhism"
@@ -131,7 +131,7 @@
       "regional"
     ],
     "Economic": [
-      "Silk Road"
+      "Silk Road", "Indian Ocean trade"
     ],
     "Religious": [
       "Hinduism"
@@ -154,7 +154,7 @@
       "pharaohs"
     ],
     "Economic": [
-      "Nile agriculture"
+      "agriculture" "Nile River trade"
     ],
     "Religious": [
       "polytheism"
@@ -178,7 +178,7 @@
       "centralized"
     ],
     "Economic": [
-      "trade"
+      "Indian Ocean trade", "agriculture"
     ],
     "Religious": [
       "polytheism"
@@ -202,7 +202,7 @@
       "centralized"
     ],
     "Economic": [
-      "coinage"
+      "coinage", "Indian Ocean trade"
     ],
     "Religious": [
       "Zoroastrianism"
