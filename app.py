@@ -154,43 +154,43 @@ import pandas as pd
 
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1kPbvMwDIqnbk-uN3PmXx-NOWqafVvX-VSUZlUPBBoFY/pub?output=csv"
 
-def push_to_github(file_path=CIV_FILE, message="Update civilizations.json"):
-    """Push updated JSON to GitHub repo."""
-    token = st.secrets["github"]["token"]
-    repo = st.secrets["github"]["repo"]
-    branch = st.secrets["github"].get("branch", "main")
+#def push_to_github(file_path=CIV_FILE, message="Update civilizations.json"):
+    #"""Push updated JSON to GitHub repo."""
+    #token = st.secrets["github"]["token"]
+    #repo = st.secrets["github"]["repo"]
+    #branch = st.secrets["github"].get("branch", "main")
 
     # Read file
-    with open(file_path, "rb") as f:
-        content = f.read()
-    b64_content = base64.b64encode(content).decode("utf-8")
+    #with open(file_path, "rb") as f:
+        #content = f.read()
+    #b64_content = base64.b64encode(content).decode("utf-8")
 
     # GitHub API URL
-    url = f"https://api.github.com/repos/{repo}/contents/{file_path}"
+    #url = f"https://api.github.com/repos/{repo}/contents/{file_path}"
 
     # Get current file SHA (needed for update)
-    headers = {"Authorization": f"token {token}"}
-    r = requests.get(url, headers=headers, params={"ref": branch})
-    if r.status_code == 200:
-        sha = r.json()["sha"]
-    else:
-        sha = None  # new file
+    #headers = {"Authorization": f"token {token}"}
+    #r = requests.get(url, headers=headers, params={"ref": branch})
+    #if r.status_code == 200:
+        #sha = r.json()["sha"]
+    #else:
+        #sha = None  # new file
 
     # Prepare payload
-    data = {
-        "message": message,
-        "content": b64_content,
-        "branch": branch,
-    }
-    if sha:
-        data["sha"] = sha
+    #data = {
+        #"message": message,
+        #"content": b64_content,
+        #"branch": branch,
+    #}
+    #if sha:
+        #data["sha"] = sha
 
     # Commit to GitHub
-    r = requests.put(url, headers=headers, json=data)
-    if r.status_code in (200, 201):
-        st.sidebar.success("✅ Changes pushed to GitHub!")
-    else:
-        st.sidebar.error(f"❌ GitHub push failed: {r.json()}")
+    #r = requests.put(url, headers=headers, json=data)
+    #if r.status_code in (200, 201):
+        #st.sidebar.success("✅ Changes pushed to GitHub!")
+    #else:
+        #st.sidebar.error(f"❌ GitHub push failed: {r.json()}")
 
 def load_data():
     try:
@@ -309,7 +309,7 @@ if tab_choice == "Civilizations":
         if new_civ and new_civ not in civilizations:
             civilizations[new_civ] = {sub: [] for sub in ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"]}
             save_data()
-            push_to_github()
+            #push_to_github()
             user = st.session_state.get("nickname", "Unknown")
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             st.sidebar.success(f"Civilization '{new_civ}' added!")
@@ -320,7 +320,7 @@ if tab_choice == "Civilizations":
         if st.sidebar.button("Delete Civilization"):
             del civilizations[delete_civ]
             save_data()
-            push_to_github()
+            #push_to_github()
             user = st.session_state.get("nickname", "Unknown")
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
@@ -346,7 +346,7 @@ if tab_choice == "Civilizations":
             
             # Persist to CIV_FILE
             save_data()
-            push_to_github()
+            #push_to_github()
             
             # Log the edit event
             user = st.session_state.get("nickname", "Unknown")
@@ -369,7 +369,7 @@ if tab_choice == "Civilizations":
             if isinstance(data, dict):
                 civilizations = data
                 save_data()
-                push_to_github()
+                #push_to_github()
                 st.sidebar.success("Data restored from JSON!")
                 save_event("Civilizations restored from uploaded JSON")
             else:
