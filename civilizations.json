@@ -267,7 +267,11 @@
     ]
   },
   "Abbasid": {
-    "Political": [],
+    "Political": [
+      "centralized",
+      "caliphate",
+      "landlords"
+    ],
     "Economic": [],
     "Religious": [],
     "Societal": [],
