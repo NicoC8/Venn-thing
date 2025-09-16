@@ -342,50 +342,36 @@ if tab_choice == "Civilizations":
             key="edit_items"
         )
 
-        st.markdown(
-            """
-            <style>
-            .save-button > button {
-                background-color: #4CAF50; /* green */
-                color: white;
-                border: none;
-                border-radius: 8px;
-                padding: 0.6em 1em;
-                font-weight: bold;
-            }
-            .save-button > button:hover {
-                background-color: #45a049; /* darker green */
-                color: white;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-    # Place the button inside a container with our custom class
-    save_container = st.sidebar.container()
-    with save_container:
-        if save_container.button("Save Changes (NECESSARY)", key="save_btn"):
-            civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
-            save_data()
-            push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
-            user = st.session_state.get("nickname", "Unknown")
-            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
-            st.toast(f"Updated {edit_sub} for {edit_civ}")
-    
-    # Inject CSS class into the button's container
+        # Custom CSS to style only the Save button by key
     st.markdown(
         """
-        <script>
-        var buttons = window.parent.document.querySelectorAll('button[kind="secondary"]');
-        for (var b of buttons) {
-            if (b.innerText.includes("Save Changes (NECESSARY)")) {
-                b.parentElement.classList.add("save-button");
-            }
+        <style>
+        div[data-testid="stSidebar"] div[data-testid="stButton"][data-baseweb="button"] button[data-testid="baseButton-element"]#save-btn {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6em 1em;
+            font-weight: bold;
         }
-        </script>
+        div[data-testid="stSidebar"] div[data-testid="stButton"][data-baseweb="button"] button[data-testid="baseButton-element"]#save-btn:hover {
+            background-color: #45a049; /* Darker green */
+            color: white;
+        }
+        </style>
         """,
         unsafe_allow_html=True
     )
+    
+    # Save Changes button with key="save-btn"
+    if st.sidebar.button("Save Changes (NECCESARY)", key="save-btn"):
+        civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
+        save_data()
+        push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
+        user = st.session_state.get("nickname", "Unknown")
+        save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+        st.toast(f"Updated {edit_sub} for {edit_civ}")
+
 
     
     
