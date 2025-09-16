@@ -341,15 +341,20 @@ def load_data():
         return {}  # empty if sheet is blank
         
 def load_events():
-    if os.path.exists(EVENTS_FILE):
+    """Safely load events.json and always return a list."""
+    if not os.path.exists(EVENTS_FILE) or os.path.getsize(EVENTS_FILE) == 0:
+        with open(EVENTS_FILE, "w") as f:
+            json.dump([], f)
+        return []
+    else:
         with open(EVENTS_FILE, "r") as f:
-            events = json.load(f)
-        # Ensure all events have a "user" field
-        for ev in events:
-            if "user" not in ev:
-                ev["user"] = "Unknown"
-        return events
-    return []
+            try:
+                events = json.load(f)
+                if not isinstance(events, list):
+                    return []
+                return events
+            except json.JSONDecodeError:
+                return []
 
 def save_event(action, user=None):
     events = load_events()
@@ -448,6 +453,7 @@ if tab_choice == "Civilizations":
             push_to_github()
             user = st.session_state.get("nickname", "Unknown")
             save_event(f"Added the '{new_civ}' civilization", user=user)
+            push_events()
             st.sidebar.success(f"Civilization '{new_civ}' added!")
 
     st.sidebar.subheader("Delete Civilization")
@@ -459,6 +465,7 @@ if tab_choice == "Civilizations":
             push_to_github()
             user = st.session_state.get("nickname", "Unknown")
             save_event(f"Deleted the '{delete_civ}' civilization", user=user)
+            push_events()
             st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
 
     st.sidebar.subheader("Edit Civilization")
@@ -504,6 +511,7 @@ if tab_choice == "Civilizations":
         push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
         user = st.session_state.get("nickname", "Unknown")
         save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+        push_events()
         st.toast(f"Updated {edit_sub} for {edit_civ}")
 
 
@@ -528,6 +536,7 @@ if tab_choice == "Civilizations":
                 push_to_github()
                 st.sidebar.success("Data restored from JSON!")
                 save_event("Civilizations restored from uploaded JSON")
+                push_events()
             else:
                 st.sidebar.error("Invalid JSON format.")
         except Exception as e:
@@ -639,7 +648,7 @@ elif tab_choice == "Event Log":
         custom_event = st.sidebar.text_input("Custom Event", key="cust-evnt")
         if st.sidebar.button("Create custom event"):
             save_event(custom_event, "Nico")
-            
+            push_events()
 
 
 # --- Main panel: Venn diagram ---
