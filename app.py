@@ -390,7 +390,7 @@ if tab_choice == "Civilizations":
 
     
     
-        st.toast(f"Updated {edit_sub} for {edit_civ}")
+        
     
     st.sidebar.subheader("Backup / Restore")
     st.sidebar.download_button(
