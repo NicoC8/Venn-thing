@@ -283,21 +283,21 @@ def push_messages(file_path=MESSAGES_FILE, message="Update messages.json"):
 
 def push_events(file_path=EVENTS_FILE, message="Update events.json"):
     # --- Load events safely ---
-if not os.path.exists(EVENTS_FILE) or os.path.getsize(EVENTS_FILE) == 0:
-    with open(EVENTS_FILE, "w") as f:
-        json.dump([], f)   # initialize as empty list
-    events = []
-else:
-    with open(EVENTS_FILE, "r") as f:
-        try:
-            events = json.load(f)
-            if not isinstance(events, list):
-                events = []  # ensure it's always a list
-        except json.JSONDecodeError:
-            events = []
-
-    except Exception as e:
-        st.sidebar.error(f"GitHub push failed: {e}")
+    if not os.path.exists(EVENTS_FILE) or os.path.getsize(EVENTS_FILE) == 0:
+        with open(EVENTS_FILE, "w") as f:
+            json.dump([], f)   # initialize as empty list
+        events = []
+    else:
+        with open(EVENTS_FILE, "r") as f:
+            try:
+                events = json.load(f)
+                if not isinstance(events, list):
+                    events = []  # ensure it's always a list
+            except json.JSONDecodeError:
+                events = []
+    
+        except Exception as e:
+            st.sidebar.error(f"GitHub push failed: {e}")
 
 def load_data():
     try:
