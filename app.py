@@ -342,26 +342,25 @@ if tab_choice == "Civilizations":
             key="edit_items"
         )
 
-        # Add CSS for a green save button
-    st.markdown(
-        """
-        <style>
-        div.stButton > button:first-child {
-            background-color: #41DC8E;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.6em 1em;
-            font-weight: bold;
-        }
-        div.stButton > button:first-child:hover {
-            background-color: #2EB774;
-            color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+        st.markdown(
+            """
+            <style>
+            .save-button > button {
+                background-color: #4CAF50; /* green */
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 0.6em 1em;
+                font-weight: bold;
+            }
+            .save-button > button:hover {
+                background-color: #45a049; /* darker green */
+                color: white;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
     # Place the button inside a container with our custom class
     save_container = st.sidebar.container()
     with save_container:
