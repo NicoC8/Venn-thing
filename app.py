@@ -341,8 +341,28 @@ if tab_choice == "Civilizations":
             ", ".join(current_items), 
             key="edit_items"
         )
-        
-        if st.sidebar.button("Save Changes"):
+
+        # Add CSS for a red save button
+    st.markdown(
+        """
+        <style>
+        div.stButton > button:first-child {
+            background-color: #41DC8E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6em 1em;
+            font-weight: bold;
+        }
+        div.stButton > button:first-child:hover {
+            background-color: #2EB774;
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+        if st.sidebar.button("Save Changes (NECESSARY)", ):
             # Update the in-memory dictionary
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             
