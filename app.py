@@ -240,6 +240,46 @@ def push_users(file_path=USERS_FILE, message="Update users.json"):
     except Exception:
         resp_json = {"text": r.text}
 
+def push_messages(file_path=MESSAGES_FILE, message="Update messages.json"):
+    """Push messages.json to GitHub."""
+    try:
+        # Read GitHub secrets
+        token = st.secrets["github"]["token"]
+        repo = st.secrets["github"]["repo"]
+        branch = st.secrets["github"].get("branch", "main")
+
+        # Ensure messages.json exists
+        if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
+            with open(file_path, "w") as f:
+                json.dump([], f)
+
+        # Read file content and encode
+        with open(file_path, "rb") as f:
+            content = f.read()
+        b64_content = base64.b64encode(content).decode("utf-8")
+
+        # GitHub API URL
+        url = f"https://api.github.com/repos/{repo}/contents/{file_path}"
+
+        # Get current SHA (needed for update)
+        headers = {"Authorization": f"token {token}"}
+        r = requests.get(url, headers=headers, params={"ref": branch})
+        sha = r.json().get("sha") if r.status_code == 200 else None
+
+        # Prepare payload
+        data = {"message": message, "content": b64_content, "branch": branch}
+        if sha:
+            data["sha"] = sha
+
+        # Commit to GitHub
+        r = requests.put(url, headers=headers, json=data)
+        r.raise_for_status()  # Raise error if status is not 200/201
+
+        st.sidebar.success("messages.json pushed successfully!")
+
+    except Exception as e:
+        st.sidebar.error(f"GitHub push failed: {e}")
+
 def load_data():
     try:
         df = pd.read_csv(SHEET_URL)
