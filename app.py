@@ -590,7 +590,7 @@ elif tab_choice == "Event Log":
                 json.dump(events, f, indent=2)
             st.sidebar.success("Event log cleared!")
         custom_event = st.sidebar.text_input("Custom Event", key="cust-evnt")
-        elif st.sidebar.button("Create custom event"):
+        if st.sidebar.button("Create custom event"):
             save_event(custom_event)
             
 
