@@ -326,6 +326,7 @@ if st.session_state["user_email"]:
             if submitted and new_nick.strip():
                 users[email] = new_nick.strip()
                 save_users()
+                push_users()
                 st.session_state["nickname"] = new_nick.strip()  # <-- store in session_state
                 st.sidebar.success(f"Nickname '{st.session_state['nickname']}' saved!")
 
