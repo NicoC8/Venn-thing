@@ -297,7 +297,11 @@
       "sailing tech",
       "borrowed"
     ],
-    "Artistic": [],
+    "Artistic": [
+      "religious",
+      "borrowed",
+      "colorful"
+    ],
     "Near": []
   }
 }
