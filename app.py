@@ -141,11 +141,16 @@ if os.path.exists(EVENTS_FILE):
 else:
     events = []
 
-if os.path.exists(USERS_FILE):
-    with open(USERS_FILE, "r") as f:
-        users = json.load(f)
-else:
+if not os.path.exists(USERS_FILE) or os.path.getsize(USERS_FILE) == 0:
+    with open(USERS_FILE, "w") as f:
+        json.dump({}, f)
     users = {}
+else:
+    with open(USERS_FILE, "r") as f:
+        try:
+            users = json.load(f)
+        except json.JSONDecodeError:
+            users = {}
 
 # -----------------------------
 # Helper functions
