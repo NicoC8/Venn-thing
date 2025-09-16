@@ -378,7 +378,7 @@ if tab_choice == "Civilizations":
         <script>
         var buttons = window.parent.document.querySelectorAll('button[kind="secondary"]');
         for (var b of buttons) {
-            if (b.innerText.includes("Save Changes")) {
+            if (b.innerText.includes("Save Changes (NECESSARY)")) {
                 b.parentElement.classList.add("save-button");
             }
         }
