@@ -193,6 +193,40 @@ def push_to_github(file_path=CIV_FILE, message="Update civilizations.json"):
         st.sidebar.success("Changes pushed to GitHub! (Saved forever!)")
     else:
         st.sidebar.error(f"GitHub push failed ({r.status_code}): {resp_json}")
+def push_users(file_path=USERS_FILE, message="Update users.json"):
+    """Push updated JSON to GitHub repo."""
+    token = st.secrets["github"]["token"]
+    repo = st.secrets["github"]["repo"]
+    branch = st.secrets["github"].get("branch", "main")
+
+    # Read file
+    with open(file_path, "rb") as f:
+        content = f.read()
+    b64_content = base64.b64encode(content).decode("utf-8")
+
+    # GitHub API URL
+    url = f"https://api.github.com/repos/{repo}/contents/{file_path}"
+
+    # Get current file SHA (needed for update)
+    headers = {"Authorization": f"token {token}"}
+    r = requests.get(url, headers=headers, params={"ref": branch})
+    sha = r.json().get("sha") if r.status_code == 200 else None
+
+    # Prepare payload
+    data = {
+        "message": message,
+        "content": b64_content,
+        "branch": branch,
+    }
+    if sha:
+        data["sha"] = sha
+
+    # Commit to GitHub
+    r = requests.put(url, headers=headers, json=data)
+    try:
+        resp_json = r.json()
+    except Exception:
+        resp_json = {"text": r.text}
 
 def load_data():
     try:
