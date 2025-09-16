@@ -142,11 +142,18 @@ else:
         except json.JSONDecodeError:
             messages = []
 
-if os.path.exists(EVENTS_FILE):
-    with open(EVENTS_FILE, "r") as f:
-        events = json.load(f)
-else:
+if not os.path.exists(EVENTS_FILE) or os.path.getsize(EVENTS_FILE) == 0:
+    with open(EVENTS_FILE, "w") as f:
+        json.dump([], f)   # initialize as empty list
     events = []
+else:
+    with open(EVENTS_FILE, "r") as f:
+        try:
+            events = json.load(f)
+            if not isinstance(events, list):
+                events = []  # ensure it's always a list
+        except json.JSONDecodeError:
+            events = []
 
 if not os.path.exists(USERS_FILE) or os.path.getsize(USERS_FILE) == 0:
     with open(USERS_FILE, "w") as f:
