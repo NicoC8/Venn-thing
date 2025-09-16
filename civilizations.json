@@ -292,7 +292,10 @@
       "merchants valued",
       "intellectuals valued"
     ],
-    "Intellectual": [],
+    "Intellectual": [
+      "sailing tech",
+      "borrowed"
+    ],
     "Artistic": [],
     "Near": []
   }
