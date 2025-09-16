@@ -129,11 +129,18 @@ if not os.path.exists(CIV_FILE):
 with open(CIV_FILE, "r") as f:
     civilizations = json.load(f)
 
-if not os.path.exists(MESSAGES_FILE):
+if not os.path.exists(MESSAGES_FILE) or os.path.getsize(MESSAGES_FILE) == 0:
+    with open(MESSAGES_FILE, "w") as f:
+        json.dump([], f)  # initialize as empty list
     messages = []
 else:
     with open(MESSAGES_FILE, "r") as f:
-        messages = json.load(f)
+        try:
+            messages = json.load(f)
+            if not isinstance(messages, list):
+                messages = []  # ensure it’s a list
+        except json.JSONDecodeError:
+            messages = []
 
 if os.path.exists(EVENTS_FILE):
     with open(EVENTS_FILE, "r") as f:
