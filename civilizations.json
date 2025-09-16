@@ -281,7 +281,11 @@
       "Indian Ocean trade",
       "Mediterranean trade"
     ],
-    "Religious": [],
+    "Religious": [
+      "Islam",
+      "tolerant",
+      "Sunni"
+    ],
     "Societal": [],
     "Intellectual": [],
     "Artistic": [],
