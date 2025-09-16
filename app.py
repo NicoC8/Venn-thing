@@ -190,9 +190,9 @@ def push_to_github(file_path=CIV_FILE, message="Update civilizations.json"):
         resp_json = {"text": r.text}
 
     if r.status_code in (200, 201):
-        st.sidebar.success("✅ Changes pushed to GitHub!")
+        st.sidebar.success("Changes pushed to GitHub! (Saved forever!)")
     else:
-        st.sidebar.error(f"❌ GitHub push failed ({r.status_code}): {resp_json}")
+        st.sidebar.error(f"GitHub push failed ({r.status_code}): {resp_json}")
 
 def load_data():
     try:
