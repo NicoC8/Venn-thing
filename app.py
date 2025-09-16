@@ -591,7 +591,7 @@ elif tab_choice == "Event Log":
             st.sidebar.success("Event log cleared!")
         custom_event = st.sidebar.text_input("Custom Event", key="cust-evnt")
         if st.sidebar.button("Create custom event"):
-            save_event(custom_event)
+            save_event(custom_event, "Nico")
             
 
 
