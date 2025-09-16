@@ -274,7 +274,12 @@
       "caliphate",
       "landlords"
     ],
-    "Economic": [],
+    "Economic": [
+      "trade-based",
+      "agriculture",
+      "Indian Ocean trade",
+      "Mediterranean trade"
+    ],
     "Religious": [],
     "Societal": [],
     "Intellectual": [],
