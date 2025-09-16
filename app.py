@@ -342,7 +342,7 @@ if tab_choice == "Civilizations":
             key="edit_items"
         )
 
-        # Add CSS for a red save button
+        # Add CSS for a green save button
     st.markdown(
         """
         <style>
@@ -362,19 +362,34 @@ if tab_choice == "Civilizations":
         """,
         unsafe_allow_html=True
     )
-    if st.sidebar.button("Save Changes (NECESSARY)", ):
-        # Update the in-memory dictionary
-        civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
-        
-        # Persist to CIV_FILE
-        save_data()
-        push_to_github()
-        
-        # Log the edit event
-        user = st.session_state.get("nickname", "Unknown")
-        save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
-        
-        # Notify user
+    # Place the button inside a container with our custom class
+    save_container = st.sidebar.container()
+    with save_container:
+        if save_container.button("Save Changes (NECESSARY)", key="save_btn"):
+            civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
+            save_data()
+            push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
+            user = st.session_state.get("nickname", "Unknown")
+            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+            st.toast(f"Updated {edit_sub} for {edit_civ}")
+    
+    # Inject CSS class into the button's container
+    st.markdown(
+        """
+        <script>
+        var buttons = window.parent.document.querySelectorAll('button[kind="secondary"]');
+        for (var b of buttons) {
+            if (b.innerText.includes("Save Changes")) {
+                b.parentElement.classList.add("save-button");
+            }
+        }
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
+
+    
+    
         st.toast(f"Updated {edit_sub} for {edit_civ}")
     
     st.sidebar.subheader("Backup / Restore")
