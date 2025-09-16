@@ -492,15 +492,28 @@ if tab_choice == "Civilizations":
 elif tab_choice == "Chat":
     st.sidebar.subheader("Shared Message Board")
 
-    # Current time
+    # --- Load messages safely ---
+    if not os.path.exists(MESSAGES_FILE) or os.path.getsize(MESSAGES_FILE) == 0:
+        with open(MESSAGES_FILE, "w") as f:
+            json.dump([], f)
+        messages = []
+    else:
+        with open(MESSAGES_FILE, "r") as f:
+            try:
+                messages = json.load(f)
+                if not isinstance(messages, list):
+                    messages = []
+            except json.JSONDecodeError:
+                messages = []
+
+    # --- Current time ---
     now = datetime.now(TIMEZONE)
     three_days_ago = now - timedelta(days=3)
 
-    # Filter messages from the last 3 days, robust to different timestamp formats
+    # --- Filter messages from the last 3 days ---
     recent_messages = []
-
     for m in messages:
-        ts_str = m["time"].strip()
+        ts_str = m.get("time", "").strip()
         ts = None
         for fmt in ("%m-%d %H:%M", "%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S"):
             try:
@@ -508,45 +521,9 @@ elif tab_choice == "Chat":
                     ts_naive = datetime.strptime(f"{now.year}-{ts_str}", "%Y-%m-%d %H:%M")
                 else:
                     ts_naive = datetime.strptime(ts_str, fmt)
-                # Make it timezone-aware
                 ts = ts_naive.replace(tzinfo=TIMEZONE)
                 break
             except ValueError:
-                continue
-        if ts is None:
-            continue
-        if ts >= three_days_ago:
-            recent_messages.append(m)
-        # Overwrite messages with only recent ones
-        messages = recent_messages
-        with open(MESSAGES_FILE, "w") as f:
-            json.dump(messages, f, indent=2)
-
-    # Display recent messages
-    if recent_messages:
-        for msg in reversed(recent_messages):
-            st.sidebar.markdown(f"**{msg['user']}** [{msg['time']}]: {msg['text']}")
-    else:
-        st.sidebar.info("No recent messages (messages auto-expire after 3 days).")
-
-    # Chat input form
-    if "nickname" in st.session_state and st.session_state["nickname"]:
-        with st.sidebar.form("message_form", clear_on_submit=True):
-            text = st.text_area("Your message", key="chat_text")
-            submitted = st.form_submit_button("Send")
-            if submitted and text:
-                ts = datetime.now(TIMEZONE).strftime("%m-%d %H:%M")
-                msg = {
-                    "user": st.session_state["nickname"],
-                    "text": text.strip(),
-                    "time": ts
-                }
-                messages.append(msg)
-                with open(MESSAGES_FILE, "w") as f:
-                    json.dump(messages, f, indent=2)
-                st.sidebar.success("Message posted!")
-    else:
-        st.sidebar.info("Enter your email and choose a nickname to chat.")
 # -----------------------------
 # Event Log Tab
 # -----------------------------
