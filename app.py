@@ -362,20 +362,20 @@ if tab_choice == "Civilizations":
         """,
         unsafe_allow_html=True
     )
-        if st.sidebar.button("Save Changes (NECESSARY)", ):
-            # Update the in-memory dictionary
-            civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
-            
-            # Persist to CIV_FILE
-            save_data()
-            push_to_github()
-            
-            # Log the edit event
-            user = st.session_state.get("nickname", "Unknown")
-            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
-            
-            # Notify user
-            st.toast(f"Updated {edit_sub} for {edit_civ}")
+    if st.sidebar.button("Save Changes (NECESSARY)", ):
+        # Update the in-memory dictionary
+        civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
+        
+        # Persist to CIV_FILE
+        save_data()
+        push_to_github()
+        
+        # Log the edit event
+        user = st.session_state.get("nickname", "Unknown")
+        save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+        
+        # Notify user
+        st.toast(f"Updated {edit_sub} for {edit_civ}")
     
     st.sidebar.subheader("Backup / Restore")
     st.sidebar.download_button(
