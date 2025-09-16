@@ -286,7 +286,11 @@
       "tolerant",
       "Sunni"
     ],
-    "Societal": [],
+    "Societal": [
+      "gender inequality",
+      "warriors valued",
+      "merchants valued"
+    ],
     "Intellectual": [],
     "Artistic": [],
     "Near": []
