@@ -578,8 +578,8 @@ elif tab_choice == "Event Log":
     else:
         st.sidebar.info("No events logged yet.")
     
-    # --- Admin Clear Button ---
-    ADMIN_EMAIL = "ncobb@cusd.me"  # change to your email
+    # --- Admin ctrls ---
+    ADMIN_EMAIL = "ncobb@cusd.me"  
     if st.session_state.get("user_email") == ADMIN_EMAIL:
         st.sidebar.markdown("---")
         st.sidebar.write("Admin Controls")
@@ -589,6 +589,10 @@ elif tab_choice == "Event Log":
             with open(EVENTS_FILE, "w") as f:
                 json.dump(events, f, indent=2)
             st.sidebar.success("Event log cleared!")
+        custom_event = st.sidebar.text_input("Custom Event", key="cust-evnt")
+        elif st.sidebar.button("Create custom event"):
+            save_event(custom_event)
+            
 
 
 # --- Main panel: Venn diagram ---
