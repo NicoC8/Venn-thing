@@ -313,7 +313,7 @@ if tab_choice == "Civilizations":
             save_data()
             push_to_github()
             user = st.session_state.get("nickname", "Unknown")
-            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+            save_event(f"Added the '{new_civ}' civilization", user=user)
             st.sidebar.success(f"Civilization '{new_civ}' added!")
 
     st.sidebar.subheader("Delete Civilization")
@@ -324,7 +324,7 @@ if tab_choice == "Civilizations":
             save_data()
             push_to_github()
             user = st.session_state.get("nickname", "Unknown")
-            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+            save_event(f"Deleted the '{delete_civ}' civilization", user=user)
             st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
 
     st.sidebar.subheader("Edit Civilization")
