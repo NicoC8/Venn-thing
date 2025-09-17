@@ -474,7 +474,6 @@ if tab_choice == "Civilizations":
         # Civilization selectbox
         if "edit_civ" not in st.session_state:
             st.session_state["edit_civ"] = list(civilizations.keys())[0]
-    
         edit_civ = st.sidebar.selectbox(
             "Choose Civilization to Edit",
             list(civilizations.keys()),
@@ -484,34 +483,26 @@ if tab_choice == "Civilizations":
         # Subcategory selectbox
         if "edit_sub" not in st.session_state:
             st.session_state["edit_sub"] = SUBCATEGORIES[0]
-    
         edit_sub = st.sidebar.selectbox(
             "Choose Subcategory",
             SUBCATEGORIES,
             key="edit_sub"
         )
     
-        # Determine the initial value for the text area
+        # Compute temporary text area value
         current_items = civilizations[edit_civ][edit_sub]
-        text_area_value = ", ".join(current_items)
+        temp_items_value = ", ".join(current_items)
     
-        # Only initialize edit_items if key doesn't exist
-        if "edit_items" not in st.session_state or \
-           st.session_state.get("last_civ") != edit_civ or \
-           st.session_state.get("last_sub") != edit_sub:
-            st.session_state["edit_items"] = text_area_value
-            st.session_state["last_civ"] = edit_civ
-            st.session_state["last_sub"] = edit_sub
-    
-        # Text area uses session_state, but value comes from session_state safely
+        # Text area using session_state, but do NOT overwrite after creation
         new_items = st.sidebar.text_area(
             "Enter items (comma-separated)",
-            value=st.session_state["edit_items"],
+            value=st.session_state.get("edit_items", temp_items_value),
             key="edit_items"
         )
     
         # Save button
         if st.sidebar.button("Save Changes"):
+            # Save new items to civilizations
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
             push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
@@ -520,7 +511,7 @@ if tab_choice == "Civilizations":
             push_events()
             st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
     
-            # Update session_state after saving
+            # **Update session_state safely AFTER button click**
             st.session_state["edit_items"] = ", ".join(civilizations[edit_civ][edit_sub])
 
 
