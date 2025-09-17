@@ -471,56 +471,56 @@ if tab_choice == "Civilizations":
 
     st.sidebar.subheader("Edit Civilization")
 
-    if civilizations:
-        # Civilization selectbox
-        if "edit_civ" not in st.session_state:
-            st.session_state["edit_civ"] = list(civilizations.keys())[0]
-    
-        edit_civ = st.sidebar.selectbox(
-            "Choose Civilization to Edit",
-            list(civilizations.keys()),
-            key="edit_civ"
-        )
-    
-        # Subcategory selectbox
-        if "edit_sub" not in st.session_state:
-            st.session_state["edit_sub"] = SUBCATEGORIES[0]
-    
-        edit_sub = st.sidebar.selectbox(
-            "Choose Subcategory",
-            SUBCATEGORIES,
-            key="edit_sub"
-        )
-    
-        # Text area for items
-        current_items = civilizations[edit_civ][edit_sub]
-        if "edit_items" not in st.session_state:
-            st.session_state["edit_items"] = ", ".join(current_items)
-    
-        new_items = st.sidebar.text_area(
-            "Enter items (comma-separated)",
-            value=st.session_state["edit_items"],
-            key="edit_items"
-        )
-    
-        # Streamlit button for saving
-        if st.sidebar.button("Save Changes (NECESSARY)"):
-            # Update civilizations dict
-            civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
-    
-            # Save to local JSON and GitHub
-            save_data()
-            push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
-    
-            # Log the event
-            user = st.session_state.get("nickname", "Unknown")
-            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
-            push_events()
-    
-            st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
-    
-            # Update session_state text area to reflect saved items
-            st.session_state["edit_items"] = ", ".join(civilizations[edit_civ][edit_sub])
+if civilizations:
+    # Civilization selectbox
+    if "edit_civ" not in st.session_state:
+        st.session_state["edit_civ"] = list(civilizations.keys())[0]
+
+    edit_civ = st.sidebar.selectbox(
+        "Choose Civilization to Edit",
+        list(civilizations.keys()),
+        key="edit_civ"
+    )
+
+    # Subcategory selectbox
+    if "edit_sub" not in st.session_state:
+        st.session_state["edit_sub"] = SUBCATEGORIES[0]
+
+    edit_sub = st.sidebar.selectbox(
+        "Choose Subcategory",
+        SUBCATEGORIES,
+        key="edit_sub"
+    )
+
+    # Update text area if civ or subcategory changed
+    current_items = civilizations[edit_civ][edit_sub]
+    if ("last_civ" not in st.session_state 
+        or st.session_state["last_civ"] != edit_civ
+        or st.session_state.get("last_sub") != edit_sub):
+        st.session_state["edit_items"] = ", ".join(current_items)
+        st.session_state["last_civ"] = edit_civ
+        st.session_state["last_sub"] = edit_sub
+
+    # Text area for items
+    new_items = st.sidebar.text_area(
+        "Enter items (comma-separated)",
+        value=st.session_state["edit_items"],
+        key="edit_items"
+    )
+
+    # Streamlit button for saving
+    if st.sidebar.button("Save Changes"):
+        civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
+        save_data()
+        push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
+        user = st.session_state.get("nickname", "Unknown")
+        save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+        push_events()
+        st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
+
+        # Update text area in session_state
+        st.session_state["edit_items"] = ", ".join(civilizations[edit_civ][edit_sub])
+
 
 
 
