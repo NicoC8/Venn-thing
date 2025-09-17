@@ -491,7 +491,7 @@ if tab_choice == "Civilizations":
         st.markdown(
             """
             <style>
-            div[data-testid="stSidebar"] button:has(span:contains("Save Changes")) {
+            div[data-testid="stSidebar"] button:has(span:contains("Save Changes (NECESSARY)")) {
                 background-color: #4CAF50 !important; /* Green */
                 color: white !important;
                 border: none !important;
@@ -499,7 +499,7 @@ if tab_choice == "Civilizations":
                 padding: 0.6em 1em !important;
                 font-weight: bold !important;
             }
-            div[data-testid="stSidebar"] button:has(span:contains("Save Changes")):hover {
+            div[data-testid="stSidebar"] button:has(span:contains("Save Changes (NECESSARY)")):hover {
                 background-color: #45a049 !important; /* Darker green */
             }
             </style>
