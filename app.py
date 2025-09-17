@@ -507,7 +507,7 @@ if tab_choice == "Civilizations":
             }
             </style>
             <form action="" method="get">
-                <button class="green-btn" type="submit" name="save" value="1">Save Changes</button>
+                <button class="green-btn" type="submit" name="save" value="1">Save Changes (NECESSARY)</button>
             </form>
             """,
             unsafe_allow_html=True
