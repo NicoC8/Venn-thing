@@ -505,7 +505,7 @@ if tab_choice == "Civilizations":
     )
     
     # Save Changes button with key="save-btn"
-    if st.sidebar.button("Save Changes (NECCESARY)", key="save-btn"):
+    if st.sidebar.button("Save Changes (NECCESARY)", key="save-btn", type="primary"):
         civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
         save_data()
         push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
