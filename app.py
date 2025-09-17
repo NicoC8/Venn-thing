@@ -456,6 +456,7 @@ if tab_choice == "Civilizations":
             save_event(f"Added the '{new_civ}' civilization", user=user)
             push_events()
             st.sidebar.success(f"Civilization '{new_civ}' added!")
+            st.toast(f"{new_civ} was added as a civilization!")
 
     st.sidebar.subheader("Delete Civilization")
     if civilizations:
@@ -468,7 +469,8 @@ if tab_choice == "Civilizations":
             save_event(f"Deleted the '{delete_civ}' civilization", user=user)
             push_events()
             st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
-
+            st.toast(f"{new_civ} was deleted!")
+            
     st.sidebar.subheader("Edit Civilization")
     if civilizations:
         # Civilization selectbox
@@ -506,7 +508,7 @@ if tab_choice == "Civilizations":
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             push_events()
             st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
-            st.toast(f"{edit_civ} was updated for {edit_sub}")
+            st.toast(f"{edit_civ} was updated for {edit_sub}!")
 
 
 
