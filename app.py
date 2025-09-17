@@ -487,11 +487,11 @@ if tab_choice == "Civilizations":
             key="edit_items"
         )
     
-        # Custom CSS: make ONLY the Save Changes button green
+        # Custom CSS: target Save Changes by its key
         st.markdown(
             """
             <style>
-            div[data-testid="stSidebar"] button[kind="primary"]:has(span:contains('Save Changes')) {
+            div[data-testid="stSidebar"] button[data-testid="baseButton-primary"][id="save_changes"] {
                 background-color: #4CAF50 !important; /* Green */
                 color: white !important;
                 border: none !important;
@@ -499,16 +499,16 @@ if tab_choice == "Civilizations":
                 padding: 0.6em 1em !important;
                 font-weight: bold !important;
             }
-            div[data-testid="stSidebar"] button[kind="primary"]:has(span:contains('Save Changes')):hover {
+            div[data-testid="stSidebar"] button[data-testid="baseButton-primary"][id="save_changes"]:hover {
                 background-color: #45a049 !important; /* Darker green */
             }
             </style>
             """,
             unsafe_allow_html=True
         )
-
-        # Save Changes button
-        if st.sidebar.button("Save Changes", key="save_changes", type="primary"):
+    
+        # Save Changes button (no type="primary")
+        if st.sidebar.button("Save Changes", key="save_changes"):
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
             push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
