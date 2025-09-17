@@ -472,37 +472,33 @@ if tab_choice == "Civilizations":
     st.sidebar.subheader("Edit Civilization")
     if civilizations:
         # Civilization selectbox
-        if "edit_civ" not in st.session_state:
-            st.session_state["edit_civ"] = list(civilizations.keys())[0]
         edit_civ = st.sidebar.selectbox(
             "Choose Civilization to Edit",
             list(civilizations.keys()),
+            index=list(civilizations.keys()).index(st.session_state.get("edit_civ", list(civilizations.keys())[0])),
             key="edit_civ"
         )
     
         # Subcategory selectbox
-        if "edit_sub" not in st.session_state:
-            st.session_state["edit_sub"] = SUBCATEGORIES[0]
         edit_sub = st.sidebar.selectbox(
             "Choose Subcategory",
             SUBCATEGORIES,
+            index=SUBCATEGORIES.index(st.session_state.get("edit_sub", SUBCATEGORIES[0])),
             key="edit_sub"
         )
     
-        # Compute temporary text area value
+        # Get current items for selected civ/subcat
         current_items = civilizations[edit_civ][edit_sub]
-        temp_items_value = ", ".join(current_items)
+        text_area_value = ", ".join(current_items)
     
-        # Text area using session_state, but do NOT overwrite after creation
+        # Use temporary variable for text area
         new_items = st.sidebar.text_area(
             "Enter items (comma-separated)",
-            value=st.session_state.get("edit_items", temp_items_value),
-            key="edit_items"
+            value=text_area_value
         )
     
         # Save button
         if st.sidebar.button("Save Changes"):
-            # Save new items to civilizations
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
             push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
@@ -510,21 +506,9 @@ if tab_choice == "Civilizations":
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             push_events()
             st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
-    
-            # **Update session_state safely AFTER button click**
-            st.session_state["edit_items"] = ", ".join(civilizations[edit_civ][edit_sub])
 
 
 
-
-
-
-
-
-
-    
-    
-        
     
     st.sidebar.subheader("Backup / Restore")
     st.sidebar.download_button(
