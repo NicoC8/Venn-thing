@@ -492,24 +492,26 @@ if civilizations:
         key="edit_sub"
     )
 
-    # Update text area if civ or subcategory changed
-    current_items = civilizations[edit_civ][edit_sub]
+    # Track last selection to update text area safely
     if ("last_civ" not in st.session_state 
         or st.session_state["last_civ"] != edit_civ
         or st.session_state.get("last_sub") != edit_sub):
-        st.session_state["edit_items"] = ", ".join(current_items)
+        
+        # Update session state **before** creating the text area
+        items = civilizations[edit_civ][edit_sub]
+        st.session_state["edit_items"] = ", ".join(items)
         st.session_state["last_civ"] = edit_civ
         st.session_state["last_sub"] = edit_sub
 
-    # Text area for items
+    # Now create the text area
     new_items = st.sidebar.text_area(
         "Enter items (comma-separated)",
-        value=st.session_state["edit_items"],
+        value=st.session_state.get("edit_items", ""),
         key="edit_items"
     )
 
-    # Streamlit button for saving
-    if st.sidebar.button("Save Changes (NECESSARY)"):
+    # Save button
+    if st.sidebar.button("Save Changes"):
         civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
         save_data()
         push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
@@ -518,8 +520,9 @@ if civilizations:
         push_events()
         st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
 
-        # Update text area in session_state
+        # Update session state after save
         st.session_state["edit_items"] = ", ".join(civilizations[edit_civ][edit_sub])
+
 
 
 
