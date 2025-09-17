@@ -487,46 +487,34 @@ if tab_choice == "Civilizations":
             key="edit_items"
         )
     
-        # CSS for the green button
-        st.markdown("""
+        # Custom HTML button (green)
+        save_button = st.sidebar.markdown(
+            """
             <style>
-            .save-green {
-                background-color: #28a745 !important;
-                color: white !important;
-                border: none !important;
-                border-radius: 8px !important;
-                padding: 0.6em 1em !important;
-                font-weight: bold !important;
+            .green-btn {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 0.6em 1em;
+                font-weight: bold;
+                cursor: pointer;
+                text-align: center;
+                display: inline-block;
             }
-            .save-green:hover {
-                background-color: #218838 !important;
+            .green-btn:hover {
+                background-color: #218838;
             }
             </style>
-        """, unsafe_allow_html=True)
+            <form action="" method="get">
+                <button class="green-btn" type="submit" name="save" value="1">Save Changes</button>
+            </form>
+            """,
+            unsafe_allow_html=True
+        )
     
-        # Render the button
-        save_clicked = st.sidebar.button("Save Changes", key="save_changes")
-    
-        # JS to attach the class, retries until the button is there
-        st.markdown("""
-            <script>
-            function styleSaveButton() {
-                const btns = window.parent.document.querySelectorAll('button');
-                btns.forEach(btn => {
-                    if (btn.innerText.includes("Save Changes")) {
-                        btn.classList.add("save-green");
-                    }
-                });
-            }
-            // Run now and also retry a few times in case DOM refresh is slow
-            styleSaveButton();
-            setTimeout(styleSaveButton, 500);
-            setTimeout(styleSaveButton, 1000);
-            setTimeout(styleSaveButton, 2000);
-            </script>
-        """, unsafe_allow_html=True)
-    
-        if save_clicked:
+        # Detect click by query param
+        if st.query_params.get("save") == "1":
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
             push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
@@ -534,6 +522,8 @@ if tab_choice == "Civilizations":
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             push_events()
             st.toast(f"Updated {edit_sub} for {edit_civ}")
+            # clear query param so it doesn't re-trigger
+            st.query_params["save"] = None
 
 
 
