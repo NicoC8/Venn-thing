@@ -487,11 +487,11 @@ if tab_choice == "Civilizations":
             key="edit_items"
         )
     
-        # Custom CSS: target Save Changes by its key
+        # Custom CSS: match the button by its label text
         st.markdown(
             """
             <style>
-            div[data-testid="stSidebar"] button[data-testid="baseButton-primary"][id="save_changes"] {
+            div[data-testid="stSidebar"] button:has(span:contains("Save Changes")) {
                 background-color: #4CAF50 !important; /* Green */
                 color: white !important;
                 border: none !important;
@@ -499,7 +499,7 @@ if tab_choice == "Civilizations":
                 padding: 0.6em 1em !important;
                 font-weight: bold !important;
             }
-            div[data-testid="stSidebar"] button[data-testid="baseButton-primary"][id="save_changes"]:hover {
+            div[data-testid="stSidebar"] button:has(span:contains("Save Changes")):hover {
                 background-color: #45a049 !important; /* Darker green */
             }
             </style>
@@ -507,8 +507,8 @@ if tab_choice == "Civilizations":
             unsafe_allow_html=True
         )
     
-        # Save Changes button (no type="primary")
-        if st.sidebar.button("Save Changes", key="save_changes"):
+        # Button stays a normal sidebar button
+        if st.sidebar.button("Save Changes (NECESSARY)"):
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
             push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
@@ -516,6 +516,7 @@ if tab_choice == "Civilizations":
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             push_events()
             st.toast(f"Updated {edit_sub} for {edit_civ}")
+
 
 
 
