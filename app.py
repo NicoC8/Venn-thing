@@ -505,7 +505,7 @@ if tab_choice == "Civilizations":
             .green-btn:hover {
                 background-color: #218838;
                 border: white;
-                curson: grabbing;
+                cursor: grabbing;
             }
             </style>
             <form action="" method="get">
