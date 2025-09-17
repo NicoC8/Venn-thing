@@ -23,7 +23,7 @@ MESSAGES_FILE = "messages.json"
 EVENTS_FILE = "events.json"
 USERS_FILE = "users.json"
 
-cursorurl = "https://sdmntpreastus.oaiusercontent.com/files/00000000-5b48-61f9-a170-0b4cf74d0a66/raw?se=2025-09-17T03%3A45%3A03Z&sp=r&sv=2024-08-04&sr=b&scid=2a038d27-2e27-549f-ad7e-0d66aef9fecd&skoid=b0fd38cc-3d33-418f-920e-4798de4acdd1&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-09-17T01%3A56%3A08Z&ske=2025-09-18T01%3A56%3A08Z&sks=b&skv=2024-08-04&sig=fPkTagjYYhMvtqVnW7JNesNiqFFRKlGZSMFRYpzcZHI%3D"
+cursorurl = "/mnt/data/A_2D_digital_image_displays_the_numbers_"6"_and_"7.png"
 
 # -----------------------------
 # Load or initialize data
