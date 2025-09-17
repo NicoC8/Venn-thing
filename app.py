@@ -487,28 +487,39 @@ if tab_choice == "Civilizations":
             key="edit_items"
         )
     
-        # Custom CSS: match the button by its label text
-        st.markdown(
-            """
+        # Inject CSS for the green button
+        st.markdown("""
             <style>
-            div[data-testid="stSidebar"] button:has(span:contains("Save Changes (NECESSARY)")) {
-                background-color: #4CAF50 !important; /* Green */
+            .save-green {
+                background-color: #28a745 !important; /* Green */
                 color: white !important;
                 border: none !important;
                 border-radius: 8px !important;
                 padding: 0.6em 1em !important;
                 font-weight: bold !important;
             }
-            div[data-testid="stSidebar"] button:has(span:contains("Save Changes (NECESSARY)")):hover {
-                background-color: #45a049 !important; /* Darker green */
+            .save-green:hover {
+                background-color: #218838 !important; /* Darker green */
             }
             </style>
-            """,
-            unsafe_allow_html=True
-        )
+        """, unsafe_allow_html=True)
     
-        # Button stays a normal sidebar button
-        if st.sidebar.button("Save Changes (NECESSARY)"):
+        # Regular button
+        save_clicked = st.sidebar.button("Save Changes", key="save_changes")
+    
+        # Use JS to add our custom class to this button
+        st.markdown("""
+            <script>
+            const btns = window.parent.document.querySelectorAll('button');
+            btns.forEach(btn => {
+                if (btn.innerText.trim() === "Save Changes") {
+                    btn.classList.add("save-green");
+                }
+            });
+            </script>
+        """, unsafe_allow_html=True)
+    
+        if save_clicked:
             civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
             save_data()
             push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
@@ -516,6 +527,7 @@ if tab_choice == "Civilizations":
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             push_events()
             st.toast(f"Updated {edit_sub} for {edit_civ}")
+
 
 
 
