@@ -506,6 +506,7 @@ if tab_choice == "Civilizations":
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             push_events()
             st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
+            st.toast(f"{edit_civ} was updated for {edit_sub}")
 
 
 
