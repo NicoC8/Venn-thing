@@ -23,6 +23,8 @@ MESSAGES_FILE = "messages.json"
 EVENTS_FILE = "events.json"
 USERS_FILE = "users.json"
 
+cursorurl = "file:///home/chronos/u-bb18152b5e0a4cc937a836dfe2cad81e4bad0cfb/MyFiles/Downloads/67.png"
+
 # -----------------------------
 # Load or initialize data
 # -----------------------------
@@ -200,7 +202,6 @@ def push_to_github(file_path=CIV_FILE, message="Update civilizations.json"):
     }
     if sha:
         data["sha"] = sha
-
     # Commit to GitHub
     r = requests.put(url, headers=headers, json=data)
     try:
@@ -505,7 +506,7 @@ if tab_choice == "Civilizations":
             .green-btn:hover {
                 background-color: #218838;
                 border: white;
-                cursor: grabbing;
+                cursor: url("{cursorurl}"), pointer;
             }
             </style>
             <form action="" method="get">
