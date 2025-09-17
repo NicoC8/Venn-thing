@@ -509,7 +509,7 @@ if civilizations:
     )
 
     # Streamlit button for saving
-    if st.sidebar.button("Save Changes"):
+    if st.sidebar.button("Save Changes (NECESSARY)"):
         civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
         save_data()
         push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
