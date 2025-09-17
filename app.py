@@ -498,13 +498,14 @@ if tab_choice == "Civilizations":
                 border-radius: 8px;
                 padding: 0.6em 1em;
                 font-weight: thin;
-                cursor: pointer;
+                cursor: grab;
                 text-align: center;
                 display: inline-block;
             }
             .green-btn:hover {
                 background-color: #218838;
                 border: white;
+                curson: grabbing;
             }
             </style>
             <form action="" method="get">
