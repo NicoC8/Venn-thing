@@ -470,7 +470,11 @@ if tab_choice == "Civilizations":
 
     st.sidebar.subheader("Edit Civilization")
     if civilizations:
-        edit_civ = st.sidebar.selectbox("Choose Civilization to Edit", list(civilizations.keys()), key="edit_civ")
+        edit_civ = st.sidebar.selectbox(
+            "Choose Civilization to Edit", 
+            list(civilizations.keys()), 
+            key="edit_civ"
+        )
         edit_sub = st.sidebar.selectbox(
             "Choose Subcategory", 
             ["Political","Economic","Religious","Societal","Intellectual","Artistic","Near"], 
@@ -482,37 +486,37 @@ if tab_choice == "Civilizations":
             ", ".join(current_items), 
             key="edit_items"
         )
-
-        # Custom CSS to style only the Save button by key
-    st.markdown(
-        """
-        <style>
-        div[data-testid="stSidebar"] div[data-testid="stButton"][data-baseweb="button"] button[data-testid="baseButton-element"]#save-btn {
-            background-color: #4CAF50; /* Green */
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.6em 1em;
-            font-weight: bold;
-        }
-        div[data-testid="stSidebar"] div[data-testid="stButton"][data-baseweb="button"] button[data-testid="baseButton-element"]#save-btn:hover {
-            background-color: #45a049; /* Darker green */
-            color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
     
-    # Save Changes button with key="save-btn"
-    if st.sidebar.button("Save Changes (NECCESARY)", key="save-btn", type="primary"):
-        civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
-        save_data()
-        push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
-        user = st.session_state.get("nickname", "Unknown")
-        save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
-        push_events()
-        st.toast(f"Updated {edit_sub} for {edit_civ}")
+        # Custom CSS: make ONLY the Save Changes button green
+        st.markdown(
+            """
+            <style>
+            div[data-testid="stSidebar"] button[kind="primary"]:has(span:contains('Save Changes')) {
+                background-color: #4CAF50 !important; /* Green */
+                color: white !important;
+                border: none !important;
+                border-radius: 8px !important;
+                padding: 0.6em 1em !important;
+                font-weight: bold !important;
+            }
+            div[data-testid="stSidebar"] button[kind="primary"]:has(span:contains('Save Changes')):hover {
+                background-color: #45a049 !important; /* Darker green */
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Save Changes button
+        if st.sidebar.button("Save Changes", key="save_changes", type="primary"):
+            civilizations[edit_civ][edit_sub] = [i.strip() for i in new_items.split(",") if i.strip()]
+            save_data()
+            push_to_github(message=f"Updated {edit_sub} for {edit_civ}")
+            user = st.session_state.get("nickname", "Unknown")
+            save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
+            push_events()
+            st.toast(f"Updated {edit_sub} for {edit_civ}")
+
 
 
     
