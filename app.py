@@ -23,7 +23,7 @@ MESSAGES_FILE = "messages.json"
 EVENTS_FILE = "events.json"
 USERS_FILE = "users.json"
 
-cursorurl = "/mnt/data/A_2D_digital_image_displays_the_numbers_"6"_and_"7.png"
+cursorurl = "67-gold.png"
 
 # -----------------------------
 # Load or initialize data
