@@ -470,7 +470,6 @@ if tab_choice == "Civilizations":
             st.sidebar.success(f"Civilization '{delete_civ}' deleted!")
 
     st.sidebar.subheader("Edit Civilization")
-
     if civilizations:
         # Civilization selectbox
         if "edit_civ" not in st.session_state:
@@ -492,21 +491,22 @@ if tab_choice == "Civilizations":
             key="edit_sub"
         )
     
-        # Track last selection to update text area safely
-        if ("last_civ" not in st.session_state 
-            or st.session_state["last_civ"] != edit_civ
-            or st.session_state.get("last_sub") != edit_sub):
-            
-            # Update session state **before** creating the text area
-            items = civilizations[edit_civ][edit_sub]
-            st.session_state["edit_items"] = ", ".join(items)
+        # Determine the initial value for the text area
+        current_items = civilizations[edit_civ][edit_sub]
+        text_area_value = ", ".join(current_items)
+    
+        # Only initialize edit_items if key doesn't exist
+        if "edit_items" not in st.session_state or \
+           st.session_state.get("last_civ") != edit_civ or \
+           st.session_state.get("last_sub") != edit_sub:
+            st.session_state["edit_items"] = text_area_value
             st.session_state["last_civ"] = edit_civ
             st.session_state["last_sub"] = edit_sub
     
-        # Now create the text area
+        # Text area uses session_state, but value comes from session_state safely
         new_items = st.sidebar.text_area(
             "Enter items (comma-separated)",
-            value=st.session_state.get("edit_items", ""),
+            value=st.session_state["edit_items"],
             key="edit_items"
         )
     
@@ -520,8 +520,9 @@ if tab_choice == "Civilizations":
             push_events()
             st.sidebar.success(f"Updated {edit_sub} for {edit_civ}")
     
-            # Update session state after save
+            # Update session_state after saving
             st.session_state["edit_items"] = ", ".join(civilizations[edit_civ][edit_sub])
+
 
 
 
