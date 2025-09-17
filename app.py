@@ -487,11 +487,11 @@ if tab_choice == "Civilizations":
             key="edit_items"
         )
     
-        # Inject CSS for the green button
+        # CSS for the green button
         st.markdown("""
             <style>
             .save-green {
-                background-color: #28a745 !important; /* Green */
+                background-color: #28a745 !important;
                 color: white !important;
                 border: none !important;
                 border-radius: 8px !important;
@@ -499,23 +499,30 @@ if tab_choice == "Civilizations":
                 font-weight: bold !important;
             }
             .save-green:hover {
-                background-color: #218838 !important; /* Darker green */
+                background-color: #218838 !important;
             }
             </style>
         """, unsafe_allow_html=True)
     
-        # Regular button
+        # Render the button
         save_clicked = st.sidebar.button("Save Changes", key="save_changes")
     
-        # Use JS to add our custom class to this button
+        # JS to attach the class, retries until the button is there
         st.markdown("""
             <script>
-            const btns = window.parent.document.querySelectorAll('button');
-            btns.forEach(btn => {
-                if (btn.innerText.trim() === "Save Changes") {
-                    btn.classList.add("save-green");
-                }
-            });
+            function styleSaveButton() {
+                const btns = window.parent.document.querySelectorAll('button');
+                btns.forEach(btn => {
+                    if (btn.innerText.includes("Save Changes")) {
+                        btn.classList.add("save-green");
+                    }
+                });
+            }
+            // Run now and also retry a few times in case DOM refresh is slow
+            styleSaveButton();
+            setTimeout(styleSaveButton, 500);
+            setTimeout(styleSaveButton, 1000);
+            setTimeout(styleSaveButton, 2000);
             </script>
         """, unsafe_allow_html=True)
     
@@ -527,6 +534,7 @@ if tab_choice == "Civilizations":
             save_event(f"Edited subcategory '{edit_sub}' in '{edit_civ}'", user=user)
             push_events()
             st.toast(f"Updated {edit_sub} for {edit_civ}")
+
 
 
 
