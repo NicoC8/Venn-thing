@@ -406,7 +406,12 @@
       "human sacrifice",
       "mummify rulers"
     ],
-    "Societal": [],
+    "Societal": [
+      "gender roles",
+      "no merchants",
+      "gender equality",
+      "split inheritance"
+    ],
     "Intellectual": [],
     "Artistic": [],
     "Near": []
