@@ -378,5 +378,14 @@
       "tribute states",
       "Inca"
     ]
+  },
+  "Inca": {
+    "Political": [],
+    "Economic": [],
+    "Religious": [],
+    "Societal": [],
+    "Intellectual": [],
+    "Artistic": [],
+    "Near": []
   }
 }
