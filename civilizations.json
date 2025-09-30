@@ -380,7 +380,13 @@
     ]
   },
   "Inca": {
-    "Political": [],
+    "Political": [
+      "Inca",
+      "divine",
+      "centralized",
+      "priests",
+      "religious leader"
+    ],
     "Economic": [],
     "Religious": [],
     "Societal": [],
