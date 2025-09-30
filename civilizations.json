@@ -367,7 +367,13 @@
     "Intellectual": [
       "agriculture"
     ],
-    "Artistic": [],
+    "Artistic": [
+      "poetry",
+      "flowers",
+      "birds",
+      "song",
+      "blood"
+    ],
     "Near": []
   }
 }
