@@ -332,7 +332,13 @@
     ]
   },
   "Aztec": {
-    "Political": [],
+    "Political": [
+      "emperor",
+      "religious leaders",
+      "military leaders",
+      "regional",
+      "calpulli"
+    ],
     "Economic": [],
     "Religious": [],
     "Societal": [],
