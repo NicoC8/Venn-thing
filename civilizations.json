@@ -433,7 +433,9 @@
   },
   "Tang": {
     "Political": [
-      "centralized"
+      "centralized",
+      "bureaucracy",
+      "civil service exams"
     ],
     "Economic": [],
     "Religious": [],
