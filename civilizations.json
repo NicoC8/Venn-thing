@@ -330,5 +330,14 @@
       "Europe",
       "India"
     ]
+  },
+  "Aztec": {
+    "Political": [],
+    "Economic": [],
+    "Religious": [],
+    "Societal": [],
+    "Intellectual": [],
+    "Artistic": [],
+    "Near": []
   }
 }
