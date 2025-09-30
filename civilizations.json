@@ -396,7 +396,16 @@
       "no outside trade",
       "manufacturing"
     ],
-    "Religious": [],
+    "Religious": [
+      "God ruler",
+      "Temple of Sun",
+      "tolerant",
+      "polytheistic",
+      "animistic",
+      "nature gods",
+      "human sacrifice",
+      "mummify rulers"
+    ],
     "Societal": [],
     "Intellectual": [],
     "Artistic": [],
