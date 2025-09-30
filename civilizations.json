@@ -419,7 +419,10 @@
       "science",
       "agriculture"
     ],
-    "Artistic": [],
+    "Artistic": [
+      "architecture",
+      "religious"
+    ],
     "Near": []
   }
 }
