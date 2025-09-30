@@ -432,7 +432,9 @@
     ]
   },
   "Tang": {
-    "Political": [],
+    "Political": [
+      "centralized"
+    ],
     "Economic": [],
     "Religious": [],
     "Societal": [],
