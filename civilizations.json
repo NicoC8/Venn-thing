@@ -339,7 +339,17 @@
       "regional",
       "calpulli"
     ],
-    "Economic": [],
+    "Economic": [
+      "agriculture",
+      "hydroponics",
+      "tribute",
+      "bartering",
+      "pochteca",
+      "merchant class",
+      "currency",
+      "markets",
+      "state distribution"
+    ],
     "Religious": [],
     "Societal": [],
     "Intellectual": [],
