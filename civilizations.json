@@ -446,7 +446,10 @@
       "Silk road",
       "Sea road"
     ],
-    "Religious": [],
+    "Religious": [
+      "Buddhism",
+      "Confucianism"
+    ],
     "Societal": [],
     "Intellectual": [],
     "Artistic": [],
