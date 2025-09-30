@@ -387,7 +387,15 @@
       "priests",
       "religious leader"
     ],
-    "Economic": [],
+    "Economic": [
+      "terraced agriculture",
+      "flattened ridges",
+      "irrigation",
+      "census",
+      "records",
+      "no outside trade",
+      "manufacturing"
+    ],
     "Religious": [],
     "Societal": [],
     "Intellectual": [],
