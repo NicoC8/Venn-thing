@@ -439,7 +439,13 @@
       "civil service exams",
       "ministries"
     ],
-    "Economic": [],
+    "Economic": [
+      "agriculture",
+      "canals",
+      "public works",
+      "Silk road",
+      "Sea road"
+    ],
     "Religious": [],
     "Societal": [],
     "Intellectual": [],
