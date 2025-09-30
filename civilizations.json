@@ -350,7 +350,9 @@
       "markets",
       "state distribution"
     ],
-    "Religious": [],
+    "Religious": [
+      "polytheism"
+    ],
     "Societal": [],
     "Intellectual": [],
     "Artistic": [],
