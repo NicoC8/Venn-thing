@@ -456,6 +456,7 @@
       "civil service exams",
       "harems for the wealthy",
       "intellectuals valued",
+      "merchants not valued",
       "scholar-gentry"
     ],
     "Intellectual": [
@@ -478,81 +479,135 @@
       "Japan"
     ]
   },
-  "Mali": {
+  "Song": {
     "Political": [
-      "sudanic state",
-      "centralized",
-      "garrisons used to maintain security",
-      "sundiata maintained society as good warrior"
+        "civil service exams",
+        "pays increased",
+        "government positions more desirable",
+        "scholar-gentry",
+        "centralized",
+        "bureaucracy",
+        "zhao helped reunite the empire",
+        "theocracy"
     ],
     "Economic": [
-      "agriculture",
-      "active trade system",
-      "Juula - merchants to carry out trade",
-      "gold",
-      "salt",
-      "slaves",
-      "Malinke expansion attributed to Sundiata",
-      "Sand Roads"
+        "tribute system practiced",
+        "tribue to Xi Xia",
+        "canal system",
+        "further reaching trade than in Tang",
+        "long-distance trade"
     ],
     "Religious": [
-      "no state religion",
-      "Islamic",
-      "polytheistic",
-      "Mansa Musa - pilgrimage to Mecca",
-      "pagan, animistic fusion"
+        "indigenous religions",
+        "Buddhism lessened",
+        "Confucianism",
+        "Daoism",
+        "Buddhism"
     ],
     "Societal": [
-      "clans",
-      "merchants valued"
+        "decline in female status",
+        "attacked Buddhists",
+        "foot binding",
+        "women practiced some independence",
+        "Warriors weakened",
+        "scholar-gentry",
+        "gender inequality",
+        "intellectuals valued",
+        "art valued for men"
     ],
     "Intellectual": [
-      "griots",
-      "storytelling"
+        "intellectuals valued"
     ],
     "Artistic": [
-      "glorification of leaders",
-      "Islamic"
+      "literature",
+      "poems",
+      "music",
+      "painting"
     ],
     "Near": [
-      "Arabia"
+      "Vietnam",
+      "Korea",
+      "Liao",
+      "Jin",
+      "Japan",
+      "Xi Xia"
     ]
   },
+  "Mali": {
+      "Political": [
+          "sudanic state",
+          "centralized",
+          "garrisons used to maintain security",
+          "sundiata maintained society as good warrior"
+      ],
+      "Economic": [
+          "agriculture",
+          "active trade system",
+          "Juula - merchants to carry out trade",
+          "gold", 
+          "salt", 
+          "slaves",
+          "Malinke expansion attributed to Sundiata",
+          "Sand Roads"
+      ],
+      "Religious": [
+          "no state religion",
+          "Islamic",
+          "polytheistic",
+          "Mansa Musa - pilgrimage to Mecca",
+          "pagan, animistic fusion"
+      ],
+      "Societal": [
+          "clans",
+          "merchants valued"
+      ],
+      "Intellectual": [
+          "griots",
+          "storytelling"
+      ],
+      "Artistic": [
+        "glorification of leaders",
+        "Islamic"
+      ],
+      "Near": [
+        "Arabia"
+      ]
+  },
   "Songhay": {
-    "Political": [
-      "centralized",
-      "founder Sunni Ali",
-      "theocracy \u2014 authority based on ability to intercede with local spirits"
-    ],
-    "Economic": [
-      "agriculture",
-      "salt",
-      "grains",
-      "slaves",
-      "Sand Roads"
-    ],
-    "Religious": [
-      "Islamic and pagan traditions fused",
-      "no state religion",
-      "Islamic",
-      "pagan",
-      "animistic"
-    ],
-    "Societal": [
-      "gender equality",
-      "familiarity between men and women",
-      "slaves major part of society",
-      "warriors valued",
-      "intellectuals not valued"
-    ],
-    "Intellectual": [
-      "intellectuals not valued"
-    ],
-    "Artistic": [
-      "Religious"
-    ],
-    "Near": [
-      "Arabia"
-    ]
-  }
+      "Political": [
+          "centralized",
+          "founder Sunni Ali",
+          "theocracy — authority based on ability to intercede with local spirits"
+      ],
+      "Economic": [
+          "agriculture",
+          "salt",
+          "grains",
+          "slaves",
+          "Sand Roads"
+      ],
+      "Religious": [
+          "Islamic and pagan traditions fused",
+          "no state religion",
+          "Islamic",
+          "pagan",
+          "animistic"
+      ],
+      "Societal": [
+          "gender equality",
+          "familiarity between men and women",
+          "slaves major part of society",
+          "warriors valued",
+          "intellectuals not valued"
+      ],
+      "Intellectual": [
+          "intellectuals not valued"
+      ],
+      "Artistic": [
+        "Religious"
+      ],
+      "Near": [
+        "Arabia"
+      ]
+    }
 }
